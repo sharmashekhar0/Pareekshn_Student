@@ -24,72 +24,77 @@ import StudentDashboard from "./pages/LoginScreens/StudentDashboard.jsx";
 import LoginWithOTP from "./components/LoginScreens/LoginWithOTP.jsx";
 import SignUpPage from "./pages/LoginScreens/SignUpPage.jsx";
 import SignUp from "./components/LoginScreens/SignUp.jsx";
+import ForgetPasswordOTPVerify from "./components/LoginScreens/ForgetPasswordOTPVerify.jsx";
+import ResetPassword from "./components/LoginScreens/ResetPassword.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route>
-			<Route path="/student" element={<LoginScreen />}>
-				<Route path="/student/login" element={<Login />}></Route>
+			<Route path="/" element={<LoginScreen />}>
+				<Route path="/" element={<Login />}></Route>
 				<Route
-					path="/student/login/forget-username"
+					path="/login/forget-username"
 					element={<ForgetUsername />}
 				></Route>
 				<Route
-					path="/student/login/forget-password"
+					path="/login/forget-password"
 					element={<ForgetPassword />}
+				></Route>
+				<Route
+					path="/login/forget-password/verify-otp"
+					element={<ForgetPasswordOTPVerify />}
+				></Route>
+				<Route
+					path="/login/forget-password/reset-password"
+					element={<ResetPassword />}
 				></Route>
 			</Route>
 			<Route
-				path="/student/login-with-passcode/"
+				path="/login-with-passcode/"
 				element={<LoginWithPasscodePage />}
 			>
 				<Route
-					path="/student/login-with-passcode/login-passcode"
+					path="/login-with-passcode/login-passcode"
 					element={<EnterLoginPasscode />}
 				></Route>
 				<Route
-					path="/student/login-with-passcode/verify-profile"
+					path="/login-with-passcode/verify-profile"
 					element={<VerifyProfile />}
 				></Route>
 				<Route
-					path="/student/login-with-passcode/upload-photo"
+					path="/login-with-passcode/upload-photo"
 					element={<UploadPhoto />}
 				></Route>
 				<Route
-					path="/student/login-with-passcode/upload-id"
+					path="/login-with-passcode/upload-id"
 					element={<UploadIDPhoto />}
 				></Route>
 				<Route
-					path="/student/login-with-passcode/verify-otp"
+					path="/login-with-passcode/verify-otp"
 					element={<OTPVerify />}
 				></Route>
 				<Route
-					path="/student/login-with-passcode/verify-aadhar"
+					path="/login-with-passcode/verify-aadhar"
 					element={<AadharVerify />}
 				></Route>
 			</Route>
-			<Route path="/student/welcome" element={<Instruction />}></Route>
-			<Route
-				path="/student/dashboard"
-				element={<StudentDashboard />}
-			></Route>
-			<Route
-				path="/student/login-with-otp"
-				element={<LoginWithPasscodePage />}
-			>
+			<Route path="/welcome" element={<Instruction />}></Route>
+			<Route path="/dashboard" element={<StudentDashboard />}></Route>
+			<Route path="/login-with-otp" element={<LoginWithPasscodePage />}>
 				<Route
-					path="/student/login-with-otp/login-otp"
+					path="/login-with-otp/login-otp"
 					element={<LoginWithOTP />}
 				></Route>
 				<Route
-					path="/student/login-with-otp/verify-otp"
+					path="/login-with-otp/verify-otp"
 					element={<OTPVerify />}
 				></Route>
 			</Route>
-			<Route path="/student/signup" element={<SignUpPage />}>
+			<Route path="/signup" element={<SignUpPage />}>
+				<Route path="/signup/account" element={<SignUp />}></Route>
 				<Route
-					path="/student/signup/account"
-					element={<SignUp />}
+					path="/signup/account/verify-otp"
+					element={<ForgetPasswordOTPVerify />}
 				></Route>
 			</Route>
 		</Route>

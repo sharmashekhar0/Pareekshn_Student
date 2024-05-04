@@ -7,20 +7,25 @@ import { IoPerson } from "react-icons/io5";
 import forgetPassword from "../../actions/LoginScreens/forgetPassword";
 import OTPVerify from "../../actions/LoginScreens/verifyOTP";
 import { useNavigate } from "react-router";
+import resetPassword from "../../actions/LoginScreens/resetPassword";
 
-function ForgetPassword() {
+function ResetPassword() {
 	const { register, handleSubmit } = useForm();
 	const navigate = useNavigate();
 
-	const forgetPasswordHandler = async (formData) => {
+	const resetPasswordHandler = async (formData) => {
 		try {
+			// if (formData.newpassword !== formData.confirmPassword) {
+			// 	return;
+			// }
 			const data = {
-				username: formData.username,
+				id_self_student: 1,
+				password: "654321",
 			};
-			await forgetPassword(data);
-			navigate("/login/forget-password/verify-otp");
+			await resetPassword(data);
+			navigate("/");
 		} catch (error) {
-			console.log("Error while forgetting password :: ", error);
+			console.log("Error while resetting password :: ", error);
 		}
 	};
 
@@ -34,7 +39,7 @@ function ForgetPassword() {
 				/>
 			</div>
 			<form
-				onSubmit={handleSubmit(forgetPasswordHandler)}
+				onSubmit={handleSubmit(resetPasswordHandler)}
 				className="w-1/2 bg-white rounded-3xl border h-96 px-4 py-2 "
 			>
 				<div className="flex justify-between items-center">
@@ -52,16 +57,17 @@ function ForgetPassword() {
 						</span>
 					</div>
 				</div>
-				<div className="relative h-14 my-8">
+				<div className="flex items-center justify-center mt-8">
+					<span className="font-medium">Reset Your Password</span>
+				</div>
+				<div className="relative h-14 my-6">
 					<div>
 						<input
 							type="text"
 							id="floating_filled"
 							className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
 							placeholder=""
-							{...register("username", {
-								required: true,
-							})}
+							{...register("newpassword", { required: true })}
 						/>
 						<div
 							htmlFor="floating_filled"
@@ -69,7 +75,27 @@ function ForgetPassword() {
 						>
 							<IoPerson className="absolute top-1/2 left-2 transform -translate-y-1/2 text-[#1C4481]" />
 							<label htmlFor="" className="pl-2">
-								Username/Email
+								New Password
+							</label>
+						</div>
+					</div>
+				</div>
+				<div className="relative h-14 my-6">
+					<div>
+						<input
+							type="text"
+							id="floating_filled"
+							className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
+							placeholder=""
+							{...register("confirmPassword", { required: true })}
+						/>
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base pl-5 text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<IoPerson className="absolute top-1/2 left-2 transform -translate-y-1/2 text-[#1C4481]" />
+							<label htmlFor="" className="pl-2">
+								Re-Enter New Password
 							</label>
 						</div>
 					</div>
@@ -85,4 +111,4 @@ function ForgetPassword() {
 	);
 }
 
-export default ForgetPassword;
+export default ResetPassword;

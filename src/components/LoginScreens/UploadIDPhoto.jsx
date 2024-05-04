@@ -8,6 +8,12 @@ import uploadIdPhoto from "../../actions/LoginScreens/uploadIdPhoto";
 function UploadIDPhoto() {
 	const navigate = useNavigate();
 
+
+
+	const goBack = () => {
+		history.goBack();
+	};
+
 	const uploadIdPhotoHandler = async (formData) => {
 		try {
 			const data = {
@@ -19,7 +25,7 @@ function UploadIDPhoto() {
 				usercode: "i9lBY5euU0vw",
 			};
 			await uploadIdPhoto(data);
-			navigate("/student/login-with-passcode/verify-otp");
+			navigate("/login-with-passcode/verify-otp");
 		} catch (error) {
 			console.log("Error while uploading id photo :: ", error);
 		}
@@ -29,6 +35,7 @@ function UploadIDPhoto() {
 		<div className="w-1/4 bg-white rounded-3xl right-64 absolute border h-2/3 p-4">
 			<div className="flex justify-between items-center">
 				<img
+					onClick={goBack}
 					src={arrowLeft}
 					alt=""
 					className="bg-[#1C4481] w-6 h-6 rounded-full"

@@ -62,7 +62,7 @@ function EnterLoginPasscode() {
 					</div>
 				</div>
 			</div>
-			<Link to={"/student/login-with-passcode/verify-profile"}>
+			<Link to={"/login-with-passcode/verify-profile"}>
 				<button
 					type="submit"
 					className="w-full h-12 bg-[#1C4481] text-white rounded-3xl"

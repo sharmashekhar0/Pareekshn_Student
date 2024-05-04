@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 
 function ForgetUsername() {
 	const { register, handleSubmit } = useForm();
+	const [message, setMessage] = useState(false);
 
 	const forgetUsernameHandler = async (formData) => {
 		try {
@@ -16,6 +17,7 @@ function ForgetUsername() {
 			};
 			console.log("Data :: ", data);
 			await forgetUsername(data);
+			setMessage(true);
 		} catch (error) {
 			console.log("Error while forgetting password :: ", error);
 		}
@@ -49,6 +51,13 @@ function ForgetUsername() {
 						</span>
 					</div>
 				</div>
+				{message && (
+					<p className="text-[12px] mt-4 text-center text-green-700">
+						Your User name has been sent to your Mobile Number after
+						matching our records. you will be redirected to the
+						login page with in 10 seconds.
+					</p>
+				)}
 				<div className="relative h-14 rounded-md px-2 py-1 my-8">
 					<div>
 						<input

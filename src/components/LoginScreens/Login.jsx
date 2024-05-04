@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import leftBg from "../../assets/LoginScreen/leftBg.jpg";
 import { BsThreeDots } from "react-icons/bs";
 import { IoPerson } from "react-icons/io5";
@@ -9,10 +9,12 @@ import { useForm } from "react-hook-form";
 import { Link, Outlet } from "react-router-dom";
 import login from "../../actions/LoginScreens/login";
 import { useNavigate } from "react-router-dom";
+import SlidingMessage from "../ApiResponse";
 
 function Login() {
 	const { register, handleSubmit } = useForm();
 	const navigate = useNavigate();
+	const [error, setError] = useState("");
 
 	const errors = {
 		username: "",
@@ -27,11 +29,23 @@ function Login() {
 				notification_id: "sdfsdfssdf",
 			};
 			const response = await login(data);
-			navigate("/student/dashboard");
+			const code = response?.data?.code;
+			const message = response?.data?.status;
+			if (code != 1000) {
+				setError(message);
+				console.log("Message :: ", message);
+				return;
+			}
+			navigate("/dashboard");
 		} catch (error) {
 			console.log("Error while loggin in :: ", error);
 		}
 	};
+
+	// const input = document.querySelector("#elementId");
+	// input.autocomplete({
+	// 	disabled: true,
+	// });
 
 	return (
 		<div className="min-h-screen relative w-full lg:w-1/2 flex justify-center items-center">
@@ -49,7 +63,7 @@ function Login() {
 				<h1 className="text-xl font-medium text-[#858585]">
 					Candidate Login
 				</h1>
-				<Link to={"/student/login-with-otp/login-otp"}>
+				<Link to={"/login-with-otp/login-otp"}>
 					<div className="bg-[#1b4581] text-white h-12 p-4 text-center rounded-3xl flex items-center justify-center gap-4 hover:cursor-pointer">
 						<BsThreeDots className="text-[#1b4581] bg-white rounded h-5 w-8" />
 						<p className="text-sm font-medium">Login with OTP</p>
@@ -94,7 +108,7 @@ function Login() {
 							</p>
 						)}
 					</div>
-					<Link to={"/student/login/forget-username"}>
+					<Link to={"/login/forget-username"}>
 						<p className="text-[#7c7b7b] text-sm hover:cursor-pointer">
 							Forget Username?
 						</p>
@@ -126,7 +140,7 @@ function Login() {
 							</div>
 						</div>
 					</div>
-					<Link to={"/student/login/forget-password"}>
+					<Link to={"/login/forget-password"}>
 						<p className="text-[#7c7b7b] text-sm hover:cursor-pointer">
 							Forget Password?
 						</p>
@@ -140,12 +154,15 @@ function Login() {
 				<div className="text-sm text-center font-semibold text-[#3C4345]">
 					<p>
 						Not registered yet?{" "}
-						<span className="text-[#0F9FCC] hover:cursor-pointer font-medium">
-							Create an account
-						</span>
+						<Link to={"/signup/account"}>
+							<span className="text-[#0F9FCC] hover:cursor-pointer font-medium">
+								Create an account
+							</span>
+						</Link>
 					</p>
 				</div>
 			</form>
+			{error && <SlidingMessage message={error} setError={setError} />}
 		</div>
 	);
 }

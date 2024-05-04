@@ -21,7 +21,7 @@ const loginWithPasscode = async (data) => {
 				},
 			}
 		);
-		console.log("Loggin With Passcode Response :: ", response);
+		console.log("Logging With Passcode Response :: ", response);
 	} catch (error) {
 		console.log("Error while logging in with passcode :: ", error);
 		throw error;

@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import tablet from "../../assets/LoginScreen/Tablet.png";
 import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import { useNavigate } from "react-router";
+import loginWithOTP from "../../actions/LoginScreens/loginWithOTP";
+import { useForm } from "react-hook-form";
 
 function LoginWithOTP() {
 	const navigate = useNavigate();
 
-	const loginWithOTPHandler = async () => {
+	const { register, handleSubmit } = useForm();
+
+	const loginWithOTPHandler = async (formData) => {
 		try {
-			navigate("/student/login-with-otp/verify-otp");
+			const data = {
+				mobile_no: "6239132410",
+			};
+			await loginWithOTP(data);
+			navigate("/login-with-otp/verify-otp");
 		} catch (error) {
 			console.log("Error while loggin with otp :: ", error);
 		}
 	};
 
 	return (
-		<div className="w-1/4 bg-white rounded-3xl right-64 absolute border h-96 px-4 py-2 ">
+		<form
+			onSubmit={handleSubmit(loginWithOTPHandler)}
+			className="w-1/4 bg-white rounded-3xl right-64 absolute border h-96 px-4 py-2 "
+		>
 			<div className="flex justify-between items-center">
 				<img
 					src={arrowLeft}
@@ -36,16 +47,17 @@ function LoginWithOTP() {
 						type="number"
 						placeholder="Enter Mobile Number"
 						className="placeholder:text-black px-2 w-full outline-none no-spin"
+						{...register("mobile_no", { required: true })}
 					/>
 				</div>
 			</div>
 			<button
-				onClick={loginWithOTPHandler}
+				type="submit"
 				className="bg-[#1C4481] text-white w-full h-10 rounded-3xl"
 			>
 				Continue
 			</button>
-		</div>
+		</form>
 	);
 }
 

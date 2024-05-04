@@ -23,7 +23,7 @@ function LoginWithPasscode() {
 				<p className="text-center text-[#1C4481] font-medium">
 					Lorem ipsum dolor sit, amet consectetur adipisicing.
 				</p>
-				<Link to={"/student/login-with-passcode/login-passcode"}>
+				<Link to={"/login-with-passcode/login-passcode"}>
 					<div className="bg-[#1b4581] flex items-center justify-center gap-2 text-sm px-4 sm:px-10 py-3 rounded-3xl text-white hover:cursor-pointer">
 						<BsThreeDots className="text-white p-1 rounded-full  border-white border-2 h-8 w-8" />
 						<p className="text-nowrap font-medium">

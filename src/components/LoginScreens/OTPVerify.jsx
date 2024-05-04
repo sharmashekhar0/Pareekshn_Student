@@ -2,9 +2,12 @@ import React from "react";
 import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import { useNavigate } from "react-router";
 import verifyOTP from "../../actions/LoginScreens/verifyOTP";
+import selfVerifyOTP from "../../actions/LoginScreens/selfVerifyOTP";
+import { useForm } from "react-hook-form";
 
 function OTPVerify() {
 	const navigate = useNavigate();
+	const { register, handleSubmit } = useForm();
 
 	const otpVerifyHandler = async (formData) => {
 		try {
@@ -17,14 +20,14 @@ function OTPVerify() {
 				exam_id: "2",
 			};
 			await verifyOTP(data);
-			// navigate("/student/login-with-passcode/verify-aadhar");
+			navigate("/dashboard");
 		} catch (error) {
 			console.log("Error while verifing otp :: ", error);
 		}
 	};
 
 	return (
-		<div className="w-1/4 bg-white rounded-3xl right-64 absolute border h-2/3 p-4">
+		<div className="w-1/4 bg-white right-64 absolute rounded-3xl border h-2/3 p-4 z-[1]">
 			<div className="flex justify-between items-center">
 				<img
 					src={arrowLeft}
@@ -38,7 +41,10 @@ function OTPVerify() {
 					<span className="font-semibold text-[#555555]">Panel</span>
 				</div>
 			</div>
-			<div className="flex flex-col mt-14 items-center gap-6">
+			<form
+				onSubmit={handleSubmit(otpVerifyHandler)}
+				className="flex flex-col mt-14 items-center gap-6"
+			>
 				<span className="text-sm font-medium">
 					Enter 4 digit code sent to your mobile phone
 				</span>
@@ -49,6 +55,7 @@ function OTPVerify() {
 							className="h-12 appearance-none enabled:appearance-none w-12 p-4 text-xl font-medium border-blue-700 border rounded outline-none "
 							maxLength="1"
 							inputMode="numeric"
+							{...register("firstDigit", { required: true })}
 						/>
 					</div>
 					<div className="w-12 h-12   flex items-center justify-center">
@@ -56,6 +63,7 @@ function OTPVerify() {
 							type="text"
 							className="h-12 appearance-none w-12 p-4 text-xl font-medium border-blue-700 border rounded outline-none "
 							maxLength="1"
+							{...register("secondDigit", { required: true })}
 						/>
 					</div>
 					<div className="w-12 h-12   flex items-center justify-center">
@@ -63,6 +71,7 @@ function OTPVerify() {
 							type="text"
 							className="h-12 appearance-none w-12 p-4 text-xl font-medium border-blue-700 border rounded outline-none "
 							maxLength="1"
+							{...register("thirdDigit", { required: true })}
 						/>
 					</div>
 					<div className="w-12 h-12   flex items-center justify-center">
@@ -70,17 +79,18 @@ function OTPVerify() {
 							type="text"
 							className="h-12 appearance-none w-12 p-4 text-xl font-medium border-blue-700 border rounded outline-none "
 							maxLength="1"
+							{...register("fourthDigit", { required: true })}
 						/>
 					</div>
 				</div>
 				<button
-					onClick={otpVerifyHandler}
+					type="submit"
 					className="bg-[#1C4481] rounded-3xl w-full h-10 font-medium text-white"
 				>
 					Submit
 				</button>
 				<span className="text-sm text-[#50B4ED]">Resend(26)</span>
-			</div>
+			</form>
 		</div>
 	);
 }

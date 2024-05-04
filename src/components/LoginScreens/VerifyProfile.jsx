@@ -17,7 +17,7 @@ function VerifyProfile() {
 
 	const verifyProfileHandler = async () => {
 		try {
-			navigate("/student/login-with-passcode/upload-photo");
+			navigate("/login-with-passcode/upload-photo");
 		} catch (error) {
 			console.log("Error while verifing profile :: ", error);
 		}

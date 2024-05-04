@@ -18,7 +18,7 @@ function UploadPhoto() {
 				usercode: "i9lBY5euU0vw",
 			};
 			await uploadPhoto(data);
-			navigate("/student/login-with-passcode/upload-id");
+			navigate("/login-with-passcode/upload-id");
 		} catch (error) {
 			console.log("Error while uploading photo :: ", error);
 		}

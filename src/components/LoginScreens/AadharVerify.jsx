@@ -8,7 +8,7 @@ function AadharVerify() {
 
 	const aadharVerifyHandler = async () => {
 		try {
-			navigate("/student/welcome");
+			navigate("/welcome");
 		} catch (error) {
 			console.log("Error while verifying aadhar :: ", error);
 		}

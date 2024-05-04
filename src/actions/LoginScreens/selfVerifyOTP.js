@@ -1,7 +1,7 @@
 import { PUBLIC_REST_API_ENDPOINT, BEARER_TOKEN } from "../../constants";
 import axios from "axios";
 
-const login = async (data) => {
+const selfVerifyOTP = async (data) => {
 	try {
 		const queryString = Object.keys(data)
 			.map(
@@ -12,7 +12,7 @@ const login = async (data) => {
 			)
 			.join("&");
 		const response = await axios.post(
-			`${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/studentLogin?${queryString}`,
+			`${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/verifyOtp?${queryString}`,
 			{},
 			{
 				headers: {
@@ -20,12 +20,10 @@ const login = async (data) => {
 				},
 			}
 		);
-		console.log("Login response :: ", response);
-		return response;
+		console.log("Self Verify OTP response :: ", response);
 	} catch (error) {
-		console.log("Error while logging in :: ", error);
-		throw error;
+		console.log("Error while verifying otp :: ", error);
 	}
 };
 
-export default login;
+export default selfVerifyOTP;
