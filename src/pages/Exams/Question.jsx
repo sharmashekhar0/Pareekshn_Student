@@ -25,6 +25,11 @@ import image from "../../assets/LoginScreen/image.png";
 
 import { useState, useEffect } from "react";
 import ChooseLanguage from "../../components/Exams/ChooseLanguage";
+import TextOptions from "../../components/Exams/TextOptions";
+import ImageOptions from "../../components/Exams/ImageOptions";
+import QuestionSection from "../../components/Exams/QuestionSection";
+import Descriptive from "../../components/Exams/Descriptive";
+import Record from "../../components/Exams/Record";
 
 function Question() {
 	const [time, setTime] = useState(600);
@@ -152,15 +157,7 @@ function Question() {
 							</div>
 						</div>
 						<div className="border-t-2 border-[#c2c2c2]"></div>
-						<div className="h-96">
-							<span className="text-justify">
-								Q. Lorem Ipsum is simply dummy text of the
-								printing and typesetting industry. Lorem Ipsum
-								has been the industry's standard dummy text ever
-								since the 1500s, when an unknown printer took a
-								galley
-							</span>
-						</div>
+						<QuestionSection />
 						<div className="border-t border-[#c2c2c2]"></div>
 						<div className="w-full h-32 flex items-center justify-between px-8">
 							<div className="flex flex-col items-center gap-2">
@@ -171,7 +168,7 @@ function Question() {
 							</div>
 							<div className="flex gap-4 items-center justify-between ">
 								<div className="flex flex-col items-center gap-2">
-									<div className="border-2 flex-col border-[#1C4481] rounded-full h-12 w-12 flex items-center justify-center">
+									<div className="border-2 flex-col border-[#1C4481] rounded-full h-11 w-11 flex items-center justify-center">
 										<img
 											src={reset}
 											alt=""
@@ -181,7 +178,7 @@ function Question() {
 									<span>Reset</span>
 								</div>
 								<div className="flex flex-col items-center gap-2">
-									<div className="border-2 flex-col border-[#1C4481] rounded-full h-12 w-12 flex items-center justify-center">
+									<div className="border-2 flex-col border-[#1C4481] rounded-full h-11 w-11 flex items-center justify-center">
 										<img
 											src={previous}
 											alt=""
@@ -191,7 +188,7 @@ function Question() {
 									<span>Previous</span>
 								</div>
 								<div className="flex flex-col items-center gap-2">
-									<div className="border-2 flex-col border-[#1C4481] rounded-full h-12 w-12 flex items-center justify-center">
+									<div className="border-2 flex-col border-[#1C4481] rounded-full h-11 w-11 flex items-center justify-center">
 										<img
 											src={play}
 											alt=""
@@ -201,7 +198,7 @@ function Question() {
 									<span>Play</span>
 								</div>
 								<div className="flex flex-col items-center gap-2">
-									<div className="border-2 flex-col border-[#1C4481] rounded-full h-12 w-12 flex items-center justify-center">
+									<div className="border-2 flex-col border-[#1C4481] rounded-full h-11 w-11 flex items-center justify-center">
 										<img
 											src={next}
 											alt=""
@@ -211,7 +208,7 @@ function Question() {
 									<span>Next</span>
 								</div>
 								<div className="flex flex-col items-center gap-2">
-									<div className="border-2 flex-col border-[#1C4481] rounded-full h-12 w-12 flex items-center justify-center">
+									<div className="border-2 flex-col border-[#1C4481] rounded-full h-11 w-11 flex items-center justify-center">
 										<img
 											src={lock}
 											alt=""
@@ -226,40 +223,10 @@ function Question() {
 					<div className="w-1/2 mt-1">
 						<div className="bg-[#F3F7FF] mx-4 rounded-xl p-6 flex flex-col gap-6">
 							<span className="font-semibold">Ans.</span>
-							<div className="flex flex-col gap-12">
-								<div className="flex items-center gap-8">
-									<div className="h-10 w-10 rounded-full flex items-center justify-center border-2 border-black">
-										<span className="text-xl font-semibold">
-											A
-										</span>
-									</div>
-									<div className="h-14 w-5/6 border bg-white rounded-full"></div>
-								</div>
-								<div className="flex items-center gap-8">
-									<div className="h-10 w-10 rounded-full flex items-center justify-center text-white bg-[#1C4481]">
-										<span className="text-xl font-semibold">
-											B
-										</span>
-									</div>
-									<div className="h-14 w-5/6 border-2 border-[#1C4481] bg-white rounded-full"></div>
-								</div>
-								<div className="flex items-center gap-8">
-									<div className="h-10 w-10 rounded-full flex items-center justify-center border-2 border-black">
-										<span className="text-xl font-semibold">
-											C
-										</span>
-									</div>
-									<div className="h-14 w-5/6 border bg-white rounded-full"></div>
-								</div>
-								<div className="flex items-center gap-8">
-									<div className="h-10 w-10 rounded-full flex items-center justify-center border-2 border-black">
-										<span className="text-xl font-semibold">
-											D
-										</span>
-									</div>
-									<div className="h-14 w-5/6 border bg-white rounded-full"></div>
-								</div>
-							</div>
+							{/* <TextOptions /> */}
+							{/* <TextOptions /> */}
+							{/* <Descriptive /> */}
+							<Record />
 						</div>
 					</div>
 				</div>
