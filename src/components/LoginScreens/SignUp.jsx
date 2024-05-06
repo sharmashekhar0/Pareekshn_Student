@@ -19,63 +19,72 @@ import { useNavigate } from "react-router";
 function SignUp() {
 	const { register, handleSubmit } = useForm();
 	const navigate = useNavigate();
+	const [highestQualication, setHighestQualication] = useState([]);
+	const [states, setStates] = useState([]);
+	const [districts, setDistricts] = useState([]);
 
-	const getHighQualListHandler = async () => {
-		try {
-			await getHighQualList();
-		} catch (error) {
-			console.log("Error while getting highest qualification :: ", error);
-		}
-	};
+	const [selectedState, setSelectedState] = useState("");
 
-	const getStatesHandler = async () => {
+	const preData = async () => {
 		try {
-			await getStates();
+			const highQual = await getHighQualList();
+			const indianStates = await getStates();
+			setHighestQualication(highQual?.data?.high_qual);
+			setStates(indianStates?.data?.states);
 		} catch (error) {
-			console.log("Error while getting highest qualification :: ", error);
-		}
-	};
-
-	const getCitiesHandler = async () => {
-		try {
-			await getCities();
-		} catch (error) {
-			console.log("Error while getting highest qualification :: ", error);
+			console.log(
+				"Error while getting highest qualification or states :: ",
+				error
+			);
 		}
 	};
 
 	useEffect(() => {
-		getHighQualListHandler();
-		getStatesHandler();
-		getCitiesHandler();
+		preData();
 	}, []);
+
+	const getCitiesHandler = async (id) => {
+		try {
+			console.log("Id :: ", id);
+			const data = {
+				id_state: id,
+			};
+			const response = await getCities(data);
+			setDistricts(response?.data?.cities);
+			console.log("Cities :: ", response?.data?.cities);
+		} catch (error) {
+			console.log("Error while getting cities :: ", error);
+		}
+	};
+
+	const handleStateChange = (e) => {
+		setSelectedState(e.target.value);
+		getCitiesHandler(e.target.value);
+		console.log("State :: ", e.target.value);
+	};
 
 	const registerStudentHandler = async (formData) => {
 		try {
 			console.log("Form Data :: ", formData);
 			const data = {
-				student_name: "Hugh Jackman2",
-				gender: "1",
-				id_hq: "2",
-				date_of_birth: "1995-10-21",
-				email_id: "hugh2@gmail.com",
-				mobile: "1232537462",
-				id_state: "12",
-				id_city: "234",
-				user_name: "hughjackman2",
-				password: "12345678",
+				student_name: formData?.fullName,
+				gender: formData?.gender,
+				id_hq: formData?.qualification,
+				date_of_birth: formData?.dob, //TODO: Date Form YYYY-MM-DD Required
+				email_id: formData?.email,
+				mobile: formData?.mobile,
+				id_state: selectedState,
+				id_city: formData?.district,
+				user_name: formData?.username,
+				password: formData?.password,
 			};
 			console.log("Data :: ", data);
 			await registerStudent(data);
-			navigate("/signup/account/verify-otp");
+			// navigate("/signup/account/verify-otp");
 		} catch (error) {
 			console.log("Error while registering student :: ", error);
 		}
 	};
-
-	const [selectedState, setSelectedState] = useState("");
-	const [selectedDistrict, setSelectedDistrict] = useState("");
-	const [districtOptions, setDistrictOptions] = useState([]);
 
 	return (
 		<form
@@ -137,9 +146,9 @@ function SignUp() {
 							<option value="" disabled hidden>
 								Please Select Gender
 							</option>
-							<option value="male">Male</option>
-							<option value="female">Female</option>
-							<option value="transgender">Transgender</option>
+							<option value="1">Male</option>
+							<option value="2">Female</option>
+							<option value="3">Transgender</option>
 						</select>
 						<div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
 							<FaAngleDown />
@@ -273,12 +282,11 @@ function SignUp() {
 							<option value="" disabled hidden>
 								Select Your Qualification
 							</option>
-							<option value="highschool">10th</option>
-							<option value="intermediate">12th</option>
-							<option value="graduation">Graduation</option>
-							<option value="postgraduation">
-								Post Graduation
-							</option>
+							{highestQualication?.map((qualName) => (
+								<option key={qualName?.id} value={qualName.id}>
+									{qualName.highest_qualification}
+								</option>
+							))}
 						</select>
 						<div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
 							<FaAngleDown />
@@ -300,14 +308,19 @@ function SignUp() {
 							id="state_select"
 							className="block pl-8 pr-3 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
 							defaultValue=""
-							onChange={(e) =>
-								handleSelectQualification(e.target.value)
-							}
-							{...register("state")}
+							onChange={(e) => handleStateChange(e)}
 						>
 							<option value="" disabled hidden>
 								Select State
 							</option>
+							{states?.map((state) => (
+								<option
+									key={state?.id_state}
+									value={state.id_state}
+								>
+									{state.state}
+								</option>
+							))}
 						</select>
 						<div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
 							<FaAngleDown />
@@ -329,14 +342,19 @@ function SignUp() {
 							id="state_select"
 							className="block pl-8 pr-3 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
 							defaultValue=""
-							onChange={(e) =>
-								handleSelectQualification(e.target.value)
-							}
 							{...register("district")}
 						>
 							<option value="" disabled hidden>
 								Select District
 							</option>
+							{districts?.map((district) => (
+								<option
+									key={district?.id_city}
+									value={district.id_city}
+								>
+									{district?.city}
+								</option>
+							))}
 						</select>
 						<div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
 							<FaAngleDown />

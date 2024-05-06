@@ -2,9 +2,12 @@ import React from "react";
 import { IoPerson } from "react-icons/io5";
 import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import { useNavigate } from "react-router";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
 
 function AadharVerify() {
 	const navigate = useNavigate();
+	const { register, handleSubmit } = useForm();
 
 	const aadharVerifyHandler = async () => {
 		try {
@@ -29,13 +32,13 @@ function AadharVerify() {
 					<span className="font-semibold text-[#555555]">Panel</span>
 				</div>
 			</div>
-			<div className="flex flex-col justify-between h-32 mt-8 px-2">
+			<form className="flex flex-col justify-between h-32 mt-8 px-2">
 				<div className="border border-black rounded-md px-4 py-1">
 					<div className="flex  items-center gap-2 text-[#1C4481]">
 						<IoPerson />
 						<span>Aadhar Number</span>
 					</div>
-					<span className="px-6">654123658987</span>
+					<input className="px-6">654123658987</input>
 				</div>
 				<button
 					onClick={aadharVerifyHandler}
@@ -43,7 +46,7 @@ function AadharVerify() {
 				>
 					Verify
 				</button>
-			</div>
+			</form>
 		</div>
 	);
 }

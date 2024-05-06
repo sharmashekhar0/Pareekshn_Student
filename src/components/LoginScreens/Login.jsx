@@ -10,16 +10,35 @@ import { Link, Outlet } from "react-router-dom";
 import login from "../../actions/LoginScreens/login";
 import { useNavigate } from "react-router-dom";
 import SlidingMessage from "../ApiResponse";
+import * as Yup from "yup";
 
 function Login() {
 	const { register, handleSubmit } = useForm();
 	const navigate = useNavigate();
 	const [error, setError] = useState("");
+	const [errors, setErrors] = useState({});
 
-	const errors = {
-		username: "",
-		password: "",
-	};
+	const validationSchema = Yup.object({
+		username: Yup.string()
+			.required("Username/Email is required")
+			.min(6, "Username should be more than 6 characters"),
+		password: Yup.string()
+			.required("Password is required")
+			.min(8, "Password must be at least 8 characters"),
+		// .matches(
+		// 	/[!@#$%^&*(),.?":{}|<>]/,
+		// 	"Password must contain at least one symbol"
+		// )
+		// .matches(/[0-9]/, "Password must contain at least one number")
+		// .matches(
+		// 	/[A-Z]/,
+		// 	"Password must contain at least one uppercase letter"
+		// )
+		// .matches(
+		// 	/[a-z]/,
+		// 	"Password must contain at least one lowercase letter"
+		// ),
+	});
 
 	const loginHandler = async (formData) => {
 		try {
@@ -28,7 +47,11 @@ function Login() {
 				password: formData?.password,
 				notification_id: "sdfsdfssdf",
 			};
+			await validationSchema.validate(data, { abortEarly: false });
+			setErrors({});
+
 			const response = await login(data);
+
 			const code = response?.data?.code;
 			const message = response?.data?.status;
 			if (code != 1000) {
@@ -38,14 +61,15 @@ function Login() {
 			}
 			navigate("/dashboard");
 		} catch (error) {
-			console.log("Error while loggin in :: ", error);
+			const newErrors = {};
+
+			error.inner.forEach((err) => {
+				newErrors[err.path] = err.message;
+			});
+
+			setErrors(newErrors);
 		}
 	};
-
-	// const input = document.querySelector("#elementId");
-	// input.autocomplete({
-	// 	disabled: true,
-	// });
 
 	return (
 		<div className="min-h-screen relative w-full lg:w-1/2 flex justify-center items-center">
@@ -58,7 +82,7 @@ function Login() {
 			</div>
 			<form
 				onSubmit={handleSubmit(loginHandler)}
-				className="bg-[#ffffff] h-[470px] w-3/4 lg:w-4/5 xl:w-2/3 rounded-3xl p-6 flex flex-col gap-4 relative z-10"
+				className="bg-[#ffffff] h-[520px] w-3/4 lg:w-4/5 xl:w-2/3 rounded-3xl p-6 flex flex-col gap-4 relative z-10"
 			>
 				<h1 className="text-xl font-medium text-[#858585]">
 					Candidate Login
@@ -102,12 +126,12 @@ function Login() {
 								</label>
 							</div>
 						</div>
-						{errors.username && (
-							<p className="text-red-500">
-								{errors.username.message}
-							</p>
-						)}
 					</div>
+					{errors?.username && (
+						<div className="error text-red-600 font-medium text-sm">
+							{errors?.username}
+						</div>
+					)}
 					<Link to={"/login/forget-username"}>
 						<p className="text-[#7c7b7b] text-sm hover:cursor-pointer">
 							Forget Username?
@@ -140,6 +164,11 @@ function Login() {
 							</div>
 						</div>
 					</div>
+					{errors?.password && (
+						<div className="error text-red-600 font-medium text-sm">
+							{errors?.password}
+						</div>
+					)}
 					<Link to={"/login/forget-password"}>
 						<p className="text-[#7c7b7b] text-sm hover:cursor-pointer">
 							Forget Password?

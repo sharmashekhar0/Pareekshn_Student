@@ -3,6 +3,7 @@ import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import leftBg from "../../assets/LoginScreen/leftBg.jpg";
 import { useForm } from "react-hook-form";
 import selfVerifyOTP from "../../actions/LoginScreens/selfVerifyOTP";
+import resendOTP from "../../actions/LoginScreens/resendOTP";
 import { useNavigate } from "react-router";
 
 function ForgetPasswordOTPVerify() {
@@ -20,6 +21,17 @@ function ForgetPasswordOTPVerify() {
 			navigate("/login/forget-password/reset-password");
 		} catch (error) {
 			console.log("Error while verifying otp :: ", error);
+		}
+	};
+
+	const resendOTPHandler = async (formData) => {
+		try {
+			const data = {
+				id_self_student: "1",
+			};
+			await resendOTP(data);
+		} catch (error) {
+			console.log("Error while resending OTP :: ", error);
 		}
 	};
 
@@ -96,7 +108,11 @@ function ForgetPasswordOTPVerify() {
 					>
 						Submit
 					</button>
-					<span className="text-sm text-[#50B4ED]">Resend(26)</span>
+					<button onClick={resendOTPHandler}>
+						<span className="text-sm text-[#50B4ED]">
+							Resend(26)
+						</span>
+					</button>
 				</form>
 			</div>
 		</div>

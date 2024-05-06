@@ -13,6 +13,7 @@ const getHighQualList = async () => {
 			}
 		);
 		console.log("Highest Qualification response :: ", response);
+		return response;
 	} catch (error) {
 		console.log("Error while getting highest qualification :: ", error);
 	}

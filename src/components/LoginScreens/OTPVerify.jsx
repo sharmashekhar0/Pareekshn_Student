@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import verifyOTP from "../../actions/LoginScreens/verifyOTP";
 import selfVerifyOTP from "../../actions/LoginScreens/selfVerifyOTP";
 import { useForm } from "react-hook-form";
+import resendOTP from "../../actions/LoginScreens/resendOTP";
 
 function OTPVerify() {
 	const navigate = useNavigate();
@@ -23,6 +24,17 @@ function OTPVerify() {
 			navigate("/dashboard");
 		} catch (error) {
 			console.log("Error while verifing otp :: ", error);
+		}
+	};
+
+	const resendOTPHandler = async (formData) => {
+		try {
+			const data = {
+				id_self_student: "1",
+			};
+			await resendOTP(data);
+		} catch (error) {
+			console.log("Error while resending OTP :: ", error);
 		}
 	};
 
@@ -89,7 +101,9 @@ function OTPVerify() {
 				>
 					Submit
 				</button>
-				<span className="text-sm text-[#50B4ED]">Resend(26)</span>
+				<button onClick={resendOTPHandler}>
+					<span className="text-sm text-[#50B4ED]">Resend(26)</span>
+				</button>
 			</form>
 		</div>
 	);

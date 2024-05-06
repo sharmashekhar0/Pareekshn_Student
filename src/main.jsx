@@ -26,6 +26,8 @@ import SignUpPage from "./pages/LoginScreens/SignUpPage.jsx";
 import SignUp from "./components/LoginScreens/SignUp.jsx";
 import ForgetPasswordOTPVerify from "./components/LoginScreens/ForgetPasswordOTPVerify.jsx";
 import ResetPassword from "./components/LoginScreens/ResetPassword.jsx";
+import ApiTesting from "./components/ApiTesting.jsx";
+import Question from "./pages/Exams/Question.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -96,6 +98,10 @@ const router = createBrowserRouter(
 					path="/signup/account/verify-otp"
 					element={<ForgetPasswordOTPVerify />}
 				></Route>
+			</Route>
+			<Route path="/testing" element={<ApiTesting />}></Route>
+			<Route path="/exam">
+				<Route path="/exam/question" element={<Question />}></Route>
 			</Route>
 		</Route>
 	)
