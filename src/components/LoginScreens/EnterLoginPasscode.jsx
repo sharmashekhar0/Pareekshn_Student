@@ -4,9 +4,11 @@ import { TbPassword } from "react-icons/tb";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import loginWithPasscode from "../../actions/LoginScreens/loginWithPasscode";
+import { useNavigate } from "react-router-dom";
 
 function EnterLoginPasscode() {
 	const { register, handleSubmit } = useForm();
+	const navigate = useNavigate();
 
 	const loginWithPasscodeHandler = async (formData) => {
 		try {

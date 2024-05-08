@@ -1,22 +1,35 @@
 import React from "react";
-import getStudentProfile from "../actions/Dashboard/getStudentProfile";
+import changePassword from "../actions/Dashboard/changePassword";
+import profilePercentage from "../actions/Dashboard/profilePercentage";
+import updatePersonal from "../actions/Dashboard/updatePersonal";
 import updateMobile from "../actions/Dashboard/updateMobile";
-import updateWeb from "../actions/Dashboard/updateWeb";
+import studentLanguages from "../actions/Dashboard/studentLanguages";
+import addStudentLanguage from "../actions/Dashboard/addStudentLanguage";
+import getLanguageList from "../actions/MasterDataApi/getLanguageList";
+import getCategories from "../actions/MasterDataApi/getCategories";
+import getIndustry from "../actions/MasterDataApi/getIndustry";
+import getDepartments from "../actions/MasterDataApi/getDepartments";
+import getJobRoleCategory from "../actions/MasterDataApi/getJobRoleCategory";
+import getJobRole from "../actions/MasterDataApi/getJobRole";
+import getKeySkills from "../actions/MasterDataApi/getKeySkills";
+import getSoftwares from "../actions/MasterDataApi/getSoftwares";
+import getBoards from "../actions/MasterDataApi/getBoards";
+import getInstitutes from "../actions/MasterDataApi/getInstitutes";
+import getCourses from "../actions/MasterDataApi/getCourses";
+import getSpecialization from "../actions/MasterDataApi/getSpecialization";
+import getPlatforms from "../actions/MasterDataApi/getPlatforms";
+import getCorporateSize from "../actions/MasterDataApi/getCorporateSize";
+import getCorporateStage from "../actions/MasterDataApi/getCorporateStage";
+import getDifficultyLevel from "../actions/MasterDataApi/getDifficultyLevel";
+import getSectors from "../actions/MasterDataApi/getSectors";
+import getPhotoSlider from "../actions/MasterDataApi/getPhotoSlider";
+import getExperienceRange from "../actions/MasterDataApi/getExperienceRange";
+import getEmpTypes from "../actions/MasterDataApi/getEmpTypes";
 
 function ApiTesting() {
 	const apiTestingHandler = async () => {
 		try {
-			const data = {
-				usercode: "",
-				id_self_student: "",
-				name: "",
-				dob: "",
-				gender: "",
-				id_city: "",
-				id_state: "",
-				id_hq: "",
-			};
-			await updateMobile(data);
+			await getEmpTypes();
 		} catch (error) {
 			console.log("Error while testing api :: ", error);
 		}

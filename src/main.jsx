@@ -28,6 +28,11 @@ import ForgetPasswordOTPVerify from "./components/LoginScreens/ForgetPasswordOTP
 import ResetPassword from "./components/LoginScreens/ResetPassword.jsx";
 import ApiTesting from "./components/ApiTesting.jsx";
 import Question from "./pages/Exams/Question.jsx";
+import UserProfile from "./components/Dashboard/UserProfile.jsx";
+import PersonalProfile from "./components/Dashboard/PersonalProfile.jsx";
+import ProfileUpdate from "./components/Dashboard/ProfileUpdate.jsx";
+import PersonalUpdate from "./components/Dashboard/PersonalUpdate.jsx";
+import ChangePassword from "./components/Dashboard/ChangePassword.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -81,7 +86,26 @@ const router = createBrowserRouter(
 				></Route>
 			</Route>
 			<Route path="/welcome" element={<Instruction />}></Route>
-			<Route path="/dashboard" element={<StudentDashboard />}></Route>
+			<Route path="/dashboard" element={<StudentDashboard />}>
+				<Route
+					path="/dashboard/student-profile"
+					element={<UserProfile />}
+				>
+					<Route
+						path="/dashboard/student-profile/personal-details"
+						element={<PersonalProfile />}
+					>
+						<Route
+							path="/dashboard/student-profile/personal-details/personal-update"
+							element={<PersonalUpdate />}
+						></Route>
+					</Route>
+					<Route
+						path="/dashboard/student-profile/change-password"
+						element={<ChangePassword />}
+					></Route>
+				</Route>
+			</Route>
 			<Route path="/login-with-otp" element={<LoginWithPasscodePage />}>
 				<Route
 					path="/login-with-otp/login-otp"
@@ -103,14 +127,15 @@ const router = createBrowserRouter(
 			<Route path="/exam">
 				<Route path="/exam/question" element={<Question />}></Route>
 			</Route>
+			<Route path="/welcome" element={<Instruction />}></Route>
 		</Route>
 	)
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<React.StrictMode>
-		<RouterProvider router={router}>
-			<App />
-		</RouterProvider>
-	</React.StrictMode>
+	// <React.StrictMode>
+	<RouterProvider router={router}>
+		<App />
+	</RouterProvider>
+	// </React.StrictMode>
 );

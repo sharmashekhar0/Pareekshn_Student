@@ -40,9 +40,31 @@ function LoginWithOTP() {
 					<span className="font-semibold text-[#222222]">OTP</span>
 				</div>
 			</div>
-			<div className="border border-black rounded-md px-2 py-1 my-8 h-12 flex items-center">
+			<div className="relative h-12 my-8">
+				<div>
+					<input
+						type="text"
+						id="floating_filled"
+						className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
+						placeholder=""
+						{...register("username", {
+							required: true,
+						})}
+					/>
+					<div
+						htmlFor="floating_filled"
+						className="absolute text-base pl-5 text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+					>
+						<img src={tablet} alt="" className="h-5 w-5" />
+						<label htmlFor="" className="pl-2">
+							Enter mobile number
+						</label>
+					</div>
+				</div>
+			</div>
+			{/* <div className="border border-black rounded-md px-2 py-1 my-8 h-12 flex items-center">
+				
 				<div className="flex items-center gap-2 text-[#1C4481] w-full">
-					<img src={tablet} alt="" className="h-5 w-5" />
 					<input
 						type="number"
 						placeholder="Enter Mobile Number"
@@ -50,7 +72,7 @@ function LoginWithOTP() {
 						{...register("mobile_no", { required: true })}
 					/>
 				</div>
-			</div>
+			</div> */}
 			<button
 				type="submit"
 				className="bg-[#1C4481] text-white w-full h-10 rounded-3xl"
