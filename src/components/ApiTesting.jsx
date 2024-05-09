@@ -25,11 +25,20 @@ import getSectors from "../actions/MasterDataApi/getSectors";
 import getPhotoSlider from "../actions/MasterDataApi/getPhotoSlider";
 import getExperienceRange from "../actions/MasterDataApi/getExperienceRange";
 import getEmpTypes from "../actions/MasterDataApi/getEmpTypes";
+import logout from "../actions/LoginScreens/logout";
+import login from "../actions/LoginScreens/login";
+import getEmployments from "../actions/Dashboard/getEmployments";
+import getEducations from "../actions/Dashboard/getEducations";
 
 function ApiTesting() {
 	const apiTestingHandler = async () => {
 		try {
-			await getEmpTypes();
+			const user = JSON.parse(localStorage.getItem("user"));
+			const data = {
+				usercode: user.usercode,
+				id_self_student: user.id_self_student,
+			};
+			await getEducations(data);
 		} catch (error) {
 			console.log("Error while testing api :: ", error);
 		}

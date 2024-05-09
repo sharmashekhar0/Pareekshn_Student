@@ -24,7 +24,7 @@ function Login() {
 			.min(6, "Username should be more than 6 characters"),
 		password: Yup.string()
 			.required("Password is required")
-			.min(8, "Password must be at least 8 characters"),
+			.min(6, "Password must be at least 8 characters"),
 		// .matches(
 		// 	/[!@#$%^&*(),.?":{}|<>]/,
 		// 	"Password must contain at least one symbol"
@@ -59,7 +59,10 @@ function Login() {
 				console.log("Message :: ", message);
 				return;
 			}
-			navigate("/dashboard");
+
+			localStorage.setItem("user", JSON.stringify(response.data.info));
+
+			navigate("/dashboard/exams");
 		} catch (error) {
 			const newErrors = {};
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import marital from "../../assets/Dashboard/marital.png";
 import category from "../../assets/Dashboard/category.png";
 import abled from "../../assets/Dashboard/abled.png";
@@ -6,14 +6,17 @@ import language from "../../assets/Dashboard/language.png";
 import key from "../../assets/Dashboard/key.png";
 import changePassword from "../../actions/Dashboard/changePassword";
 import { useForm } from "react-hook-form";
+import ApiResponse from "../ApiResponse";
 
 function ChangePassword() {
 	const { register, handleSubmit } = useForm();
+	const [response, setResponse] = useState("");
 
 	const changePasswordHandler = async (formData) => {
 		try {
 			if (formData?.newPassword != formData?.confirmPassword) {
 				console.log("New Password != Confirm Password");
+				setResponse("Password Mismatch");
 				return;
 			}
 			const data = {
@@ -22,7 +25,15 @@ function ChangePassword() {
 				new_password: formData?.newPassword,
 				old_password: formData?.oldPassword,
 			};
-			await changePassword(data);
+			const response = await changePassword(data);
+			if (response.data.code === 1000) {
+				setResponse("Password Changed Successfully");
+				return;
+			}
+			if (response.data.code != 1000) {
+				setResponse("Password Change Unsuccessful");
+				console.log("Error");
+			}
 		} catch (error) {
 			console.log("Error while changing password :: ", error);
 		}
@@ -81,6 +92,9 @@ function ChangePassword() {
 			>
 				<span>Save</span>
 			</button>
+			{response && (
+				<ApiResponse message={response} setError={setResponse} />
+			)}
 		</form>
 	);
 }

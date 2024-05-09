@@ -8,6 +8,8 @@ import passcode from "/passcode.png";
 import banner1 from "/banner1.png";
 import digital from "/digital.png";
 import gamer from "/gamer.png";
+import practice from "../../assets/Dashboard/practice.png";
+import attempted from "../../assets/Dashboard/attempted.png";
 
 function Exams() {
 	return (
@@ -16,9 +18,33 @@ function Exams() {
 				<div className="left-1/2 transform -translate-y-1/2 border-2 bg-white border-[#1C4481] w-[360px] h-20 rounded-full flex items-center px-2 gap-4">
 					<div className="bg-[#1C4481] text-white w-1/2 h-16 rounded-full flex items-center px-2 gap-2">
 						<img src={mock} alt="" className="h-10" />
-						<span>Mock Exam</span>
+						<span className="font-semibold">Exam</span>
 					</div>
-					<span className="font-semibold">Attempted Exams</span>
+					<span className="font-semibold">Hackathon</span>
+				</div>
+			</div>
+			<div className="w-full flex justify-center gap-8">
+				<div className="h-12 bg-[#1C4481] rounded-lg justify-center border w-52 flex items-center gap-3">
+					<img src={practice} alt="" className="h-8" />
+					<span className="text-white font-medium">
+						Practice Exam
+					</span>
+				</div>
+				<div className="h-12 border-2 rounded-lg justify-center border-[#1C4481] w-52 flex items-center gap-3">
+					<img src={attempted} alt="" className="h-8" />
+					<span className="text-[#1C4481] font-medium">
+						Attempted Exam
+					</span>
+				</div>
+			</div>
+			<div className="w-full flex mt-4 gap-8 px-8">
+				<div className="h-10 bg-[#1C4481] rounded-full justify-center border w-44 flex items-center gap-3">
+					<span className="text-white font-medium">Free Exams</span>
+				</div>
+				<div className="h-10 border rounded-full justify-center border-[#1C4481] bg-white w-44 flex items-center gap-3">
+					<span className="text-[#1C4481] font-medium">
+						Paid Exams
+					</span>
 				</div>
 			</div>
 			<div className="flex items-center">
