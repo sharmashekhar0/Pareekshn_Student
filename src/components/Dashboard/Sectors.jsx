@@ -30,7 +30,7 @@ function Sectors() {
 				usercode: user?.usercode,
 				id_self_student: user?.id_self_student,
 				id_sector: sectorId,
-				select: !select,
+				select: select === true ? 0 : 1,
 			};
 			console.log("Data :: ", data);
 			const response = await sectorSelection(data);
