@@ -1,7 +1,13 @@
 import { PUBLIC_REST_API_ENDPOINT, BEARER_TOKEN } from "../../constants";
 import axios from "axios";
 
-const login = async (data) => {
+// const data = {
+//   usercode: user?.usercode,
+//   id_self_student: user?.id_self_student,
+//   id_qp: "402",
+// };
+
+const dashboardExamList = async (data) => {
   try {
     const queryString = Object.keys(data)
       .map(
@@ -25,4 +31,4 @@ const login = async (data) => {
   }
 };
 
-export default login;
+export default dashboardExamList;

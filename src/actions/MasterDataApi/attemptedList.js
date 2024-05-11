@@ -1,7 +1,7 @@
 import { PUBLIC_REST_API_ENDPOINT, BEARER_TOKEN } from "../../constants";
 import axios from "axios";
 
-const login = async (data) => {
+const attemptedList = async (data) => {
   try {
     const queryString = Object.keys(data)
       .map(
@@ -9,7 +9,7 @@ const login = async (data) => {
       )
       .join("&");
     const response = await axios.post(
-      `${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/studentLogin?${queryString}`,
+      `${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/fetchAttemptedExamList?${queryString}`,
       {},
       {
         headers: {
@@ -17,7 +17,7 @@ const login = async (data) => {
         },
       }
     );
-    console.log("Login response :: ", response);
+    console.log("AttemptedList response :: ", response);
     return response;
   } catch (error) {
     console.log("Error while logging in :: ", error);
@@ -25,4 +25,4 @@ const login = async (data) => {
   }
 };
 
-export default login;
+export default attemptedList;
