@@ -33,6 +33,14 @@ import PersonalProfile from "./components/Dashboard/PersonalProfile.jsx";
 import ProfileUpdate from "./components/Dashboard/ProfileUpdate.jsx";
 import PersonalUpdate from "./components/Dashboard/PersonalUpdate.jsx";
 import ChangePassword from "./components/Dashboard/ChangePassword.jsx";
+import EducationProfile from "./components/Dashboard/EducationProfile.jsx";
+import Employment from "./components/Dashboard/Employment.jsx";
+import Skills from "./components/Dashboard/Skills.jsx";
+import Resume from "./components/Dashboard/Resume.jsx";
+import CareerProfile from "./components/Dashboard/CareerProfile.jsx";
+import ExamFeeDetailsPage from "./pages/Dashboard/ExamFeeDetailsPage.jsx";
+import Exams from "./components/Dashboard/Exams.jsx";
+import Sectors from "./components/Dashboard/Sectors.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -87,10 +95,16 @@ const router = createBrowserRouter(
 			</Route>
 			<Route path="/welcome" element={<Instruction />}></Route>
 			<Route path="/dashboard" element={<StudentDashboard />}>
+				<Route path="/dashboard/exams" element={<Exams />}></Route>
+
 				<Route
 					path="/dashboard/student-profile"
 					element={<UserProfile />}
 				>
+					<Route
+						path="/dashboard/student-profile/sectors"
+						element={<Sectors />}
+					></Route>
 					<Route
 						path="/dashboard/student-profile/personal-details"
 						element={<PersonalProfile />}
@@ -100,6 +114,30 @@ const router = createBrowserRouter(
 							element={<PersonalUpdate />}
 						></Route>
 					</Route>
+					<Route
+						path="/dashboard/student-profile/profile-update"
+						element={<ProfileUpdate />}
+					></Route>
+					<Route
+						path="/dashboard/student-profile/education-profile"
+						element={<EducationProfile />}
+					></Route>
+					<Route
+						path="/dashboard/student-profile/employment"
+						element={<Employment />}
+					></Route>
+					<Route
+						path="/dashboard/student-profile/skills"
+						element={<Skills />}
+					></Route>
+					<Route
+						path="/dashboard/student-profile/resume"
+						element={<Resume />}
+					></Route>
+					<Route
+						path="/dashboard/student-profile/career-profile"
+						element={<CareerProfile />}
+					></Route>
 					<Route
 						path="/dashboard/student-profile/change-password"
 						element={<ChangePassword />}

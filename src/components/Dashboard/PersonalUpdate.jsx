@@ -6,23 +6,39 @@ import email from "../../assets/Dashboard/email.png";
 import mobile from "../../assets/Dashboard/mobile.png";
 import user from "../../assets/Dashboard/user.png";
 import getStudentProfile from "../../actions/Dashboard/getStudentProfile";
+import profilePercentage from "../../actions/Dashboard/profilePercentage";
+import formatDate from "../../utils/formatDate";
 
 function PersonalUpdate() {
 	const [studentProfile, setStudentProfile] = useState({});
 
 	const getStudentProfileHandler = async () => {
 		try {
+			const user = JSON.parse(localStorage.getItem("user"));
+			console.log("User :: ", user);
 			const data = {
-				usercode: "euDzyClFhzWP",
-				id_self_student: 116,
+				usercode: user.usercode,
+				id_self_student: user.id_self_student,
 			};
 			const response = await getStudentProfile(data);
 			if (response?.data?.code === 1000 && response?.data?.profile) {
 				setStudentProfile(response.data.profile);
+				localStorage.setItem(
+					"student_profile",
+					JSON.stringify(response.data.profile)
+				);
 				console.log("Response :: ", response.data.profile);
 			}
 		} catch (error) {
 			console.log("Error while getting student profile :: ", error);
+		}
+	};
+
+	const getProfilePercentage = async () => {
+		try {
+			const response = await profilePercentage();
+		} catch (error) {
+			console.log("Error while getting profile percentage :: ", error);
 		}
 	};
 
@@ -37,14 +53,6 @@ function PersonalUpdate() {
 			return "Female";
 		} else return "Transgender";
 	};
-
-	function formatDate(inputDate) {
-		const date = new Date(inputDate);
-		const year = date.getUTCFullYear();
-		const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-		const day = String(date.getUTCDate()).padStart(2, "0");
-		return `${year}-${month}-${day}`;
-	}
 
 	function extractName(fullName, label) {
 		// Check if fullName is empty

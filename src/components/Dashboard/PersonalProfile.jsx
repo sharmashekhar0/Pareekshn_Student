@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import profilecircle from "../../assets/Dashboard/profilecircle.png";
 import profile from "../../assets/Dashboard/profile.png";
 
@@ -9,8 +9,30 @@ import CareerProfile from "../Dashboard/CareerProfile";
 // import CertificateProject from "../AdminPanel/CertificateProject";
 // import OnlineProfile from "../AdminPanel/OnlineProfile";
 import { Outlet } from "react-router";
+import profilePercentage from "../../actions/Dashboard/profilePercentage";
 
 function PersonalProfile() {
+	const [profilePercent, setProfilePercent] = useState([]);
+
+	const getProfilePercentageHandler = async () => {
+		try {
+			const user = JSON.parse(localStorage.getItem("user"));
+			const data = {
+				usercode: user.usercode,
+				id_self_student: user.id_self_student,
+			};
+			const response = await profilePercentage(data);
+			setProfilePercent(response.data.profile_perc);
+			console.log("Profile percentage :: ");
+		} catch (error) {
+			console.log("Error while getting profile percentage :: ", error);
+		}
+	};
+
+	useEffect(() => {
+		getProfilePercentageHandler();
+	}, []);
+
 	return (
 		<div className="flex gap-6">
 			<div className="w-[300px] bg-[#D7E7FF] h-fit rounded-3xl flex items-center flex-col pb-14">
@@ -26,7 +48,9 @@ function PersonalProfile() {
 				<div className="flex flex-col items-center min-h-60">
 					<span className="font-medium">Profile Completion</span>
 					<span className="text-3xl font-semibold text-[#1C4481]">
-						75%
+						{profilePercent?.length > 0 &&
+							profilePercent[0]?.score_percentage}
+						%
 					</span>
 				</div>
 				{/* <div className="flex flex-col w-full p-4 text-sm h-72 gap-2">
