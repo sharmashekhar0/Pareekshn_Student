@@ -30,20 +30,48 @@ import examlistQP from "../actions/MasterDataApi/examListQP";
 import attemptedList from "../actions/MasterDataApi/attemptedList";
 import getRandomMockExam from "../actions/MasterDataApi/getRandomMockExam";
 import amsStatistics from "../actions/MasterDataApi/amsStatistics";
-import hackthonStudentDashboardStatistics from "../actions/MasterDataApi/hackthonStudentDashboardStatistics";
-import newHackathonList from "../actions/MasterDataApi/newHackathonList";
-import enrolledHackathonList from "../actions/MasterDataApi/enrolledHackathonList";
-import aymentPolicyDescription from "../actions/MasterDataApi/paymentPolicyDescription";
-import applyPromo from "../actions/MasterDataApi/applyPromo";
-import updatePayment from "../actions/MasterDataApi/updatePayment";
-import fetchAllTransaction from "../actions/MasterDataApi/fetchAllTransaction";
-import fetchRefundRequest from "../actions/MasterDataApi/fetchRefundRequest";
+import hackthonStudentDashboardStatistics from "../actions/Hackthon/hackthonStudentDashboardStatistics";
+import newHackathonList from "../actions/Hackthon/newHackathonList";
+import enrolledHackathonList from "../actions/Hackthon/enrolledHackathonList";
+import aymentPolicyDescription from "../actions/Hackthon/paymentPolicyDescription";
+import applyPromo from "../actions/Hackthon/applyPromo";
+import updatePayment from "../actions/Hackthon/updatePayment";
+import fetchAllTransaction from "../actions/Hackthon/fetchAllTransaction";
+import fetchRefundRequest from "../actions/Hackthon/fetchRefundRequest";
 import vivaExamFetch from "../actions/Viva/vivaExamFetch";
+import dashboardExamList from "../actions/MasterDataApi/dashboardExamList";
+import disciptiveExamFetch from "../actions/DescriptiveCopy/disciptiveExamFetch";
+import discriptiveExamSubmit from "../actions/DescriptiveCopy/discriptiveExamSubmit";
+import examInitial from "../actions/Theory/examInitial";
+import SubmitExam from "../actions/Theory/submitExam";
+import randomImages from "../actions/Theory/randomImages";
+import examsInitial from "../actions/Passcode/examsInitial";
+import autoExamInitial from "../actions/Passcode/autoExamInitial";
+import submitExams from "../actions/Passcode/submitExams";
+import attemptedHackathonList from "../actions/Hackthon/attemptedHackathonList";
 
 function ApiTesting() {
   const apiTestingHandler = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("User Respone:", user);
     try {
-      await getEmpTypes();
+      const data = {
+        usercode: user?.usercode,
+        id_self_student: user?.id_self_student,
+        // exam_id: "8551",
+        // student_id: "211086",
+        // sub_user_id: "28",
+        // user_id: 1,
+        // req_by: "web",
+        // shuffle_ques: "1",
+        // shuffle_ans: 0,
+        // total_question: 4,
+        // total_time_taken: 3.46,
+        // type: 1,
+        // students: [{ student_id: 211037, attempted: 1 }],
+      };
+      console.log("Testing data:", data);
+      await attemptedHackathonList(data);
     } catch (error) {
       console.log("Error while testing api :: ", error);
     }

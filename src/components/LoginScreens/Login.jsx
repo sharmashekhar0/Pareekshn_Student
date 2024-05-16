@@ -61,11 +61,12 @@ function Login() {
         console.log("Message :: ", message);
         return;
       }
+      localStorage.setItem("user", JSON.stringify(response.data.info));
       navigate("/dashboard");
     } catch (error) {
       const newErrors = {};
 
-      error.inner.forEach((err) => {
+      error?.inner?.forEach((err) => {
         newErrors[err.path] = err.message;
       });
 

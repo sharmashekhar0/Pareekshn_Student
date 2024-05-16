@@ -121,6 +121,10 @@ function SignUp() {
     }
   };
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <form
       onSubmit={handleSubmit(registerStudentHandler)}
@@ -139,6 +143,7 @@ function SignUp() {
             src={arrowLeft}
             alt=""
             className="bg-[#1C4481] w-6 h-6 rounded-full"
+            onClick={handleBack}
           />
           <div className="flex flex-col items-end">
             <span className="font-semibold text-[#AFAFAF]">Create</span>

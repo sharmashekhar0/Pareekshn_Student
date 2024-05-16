@@ -15,7 +15,7 @@ const dashboardExamList = async (data) => {
       )
       .join("&");
     const response = await axios.post(
-      `${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/studentLogin?${queryString}`,
+      `${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/fetchDashboardExamList?${queryString}`,
       {},
       {
         headers: {
@@ -23,10 +23,10 @@ const dashboardExamList = async (data) => {
         },
       }
     );
-    console.log("Login response :: ", response);
+    console.log("Dashboard Exam List response :: ", response);
     return response;
   } catch (error) {
-    console.log("Error while logging in :: ", error);
+    console.log("Error while Dashboard Exam List in :: ", error);
     throw error;
   }
 };

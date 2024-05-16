@@ -63,6 +63,9 @@ function OTPVerify() {
       console.log("Error while resending OTP :: ", error);
     }
   };
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   return (
     <div className="w-1/4 bg-white right-64 absolute rounded-3xl border h-2/3 p-4 z-[1]">
@@ -71,6 +74,7 @@ function OTPVerify() {
           src={arrowLeft}
           alt=""
           className="bg-[#1C4481] w-6 h-6 rounded-full"
+          onClick={handleBack}
         />
         <div className="flex flex-col items-end">
           <span className="font-semibold text-[#AFAFAF]">Candidate</span>

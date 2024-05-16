@@ -49,6 +49,9 @@ function ResetPassword() {
       setErrors(newErrors);
     }
   };
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   return (
     <div className="min-h-screen relative w-full lg:w-1/2 flex justify-center items-center">
@@ -68,6 +71,7 @@ function ResetPassword() {
             src={arrowLeft}
             alt=""
             className="bg-[#1C4481] w-6 h-6 rounded-full"
+            onClick={handleBack}
           />
           <div className="flex flex-col items-end">
             <span className="font-semibold text-[#AFAFAF]">Forget</span>

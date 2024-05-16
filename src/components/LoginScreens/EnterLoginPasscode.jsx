@@ -42,6 +42,9 @@ function EnterLoginPasscode() {
       setErrors(newErrors);
     }
   };
+  const handleBack = () => {
+    navigate(-2);
+  };
 
   return (
     <form
@@ -53,6 +56,7 @@ function EnterLoginPasscode() {
           src={arrowLeft}
           alt=""
           className="bg-[#1C4481] w-6 h-6 rounded-full"
+          onClick={handleBack}
         />
         <div className="flex flex-col items-end">
           <span className="font-semibold text-[#AFAFAF]">Candidate</span>
