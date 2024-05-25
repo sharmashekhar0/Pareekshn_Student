@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import leftBg from "../../assets/LoginScreen/leftBg.jpg";
 import { BsThreeDots } from "react-icons/bs";
 import { IoPerson } from "react-icons/io5";
@@ -11,13 +11,13 @@ import login from "../../actions/LoginScreens/login";
 import { useNavigate } from "react-router-dom";
 import SlidingMessage from "../ApiResponse";
 import * as Yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  // const[navigates, setNavigate]= useState("")
-  // const[navigates, setNavigate]= useState({})
   const [errors, setErrors] = useState({});
 
   const validationSchema = Yup.object({
@@ -27,19 +27,6 @@ function Login() {
     password: Yup.string()
       .required("Password is required")
       .min(6, "Password must be at least 8 characters"),
-    // .matches(
-    // 	/[!@#$%^&*(),.?":{}|<>]/,
-    // 	"Password must contain at least one symbol"
-    // )
-    // .matches(/[0-9]/, "Password must contain at least one number")
-    // .matches(
-    // 	/[A-Z]/,
-    // 	"Password must contain at least one uppercase letter"
-    // )
-    // .matches(
-    // 	/[a-z]/,
-    // 	"Password must contain at least one lowercase letter"
-    // ),
   });
 
   const loginHandler = async (formData) => {
@@ -56,13 +43,14 @@ function Login() {
 
       const code = response?.data?.code;
       const message = response?.data?.status;
-      if (code != 1000) {
-        setError(message);
+      if (code !== 1000) {
+        toast.error("Username or Password Wrong!");
         console.log("Message :: ", message);
         return;
       }
       localStorage.setItem("user", JSON.stringify(response.data.info));
-      navigate("/dashboard");
+      toast.success("You have successfully logged in!");
+      navigate("/dashboard/exams");
     } catch (error) {
       const newErrors = {};
 
@@ -191,6 +179,7 @@ function Login() {
         </div>
       </form>
       {error && <SlidingMessage message={error} setError={setError} />}
+      <ToastContainer />
     </div>
   );
 }

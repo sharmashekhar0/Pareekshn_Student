@@ -49,6 +49,7 @@ import examsInitial from "../actions/Passcode/examsInitial";
 import autoExamInitial from "../actions/Passcode/autoExamInitial";
 import submitExams from "../actions/Passcode/submitExams";
 import attemptedHackathonList from "../actions/Hackthon/attemptedHackathonList";
+import leaderboard from "../actions/Hackthon/leaderboard";
 
 function ApiTesting() {
   const apiTestingHandler = async () => {
@@ -58,6 +59,8 @@ function ApiTesting() {
       const data = {
         usercode: user?.usercode,
         id_self_student: user?.id_self_student,
+        id: 2,
+        id_batch: 8644,
         // exam_id: "8551",
         // student_id: "211086",
         // sub_user_id: "28",
@@ -71,7 +74,7 @@ function ApiTesting() {
         // students: [{ student_id: 211037, attempted: 1 }],
       };
       console.log("Testing data:", data);
-      await attemptedHackathonList(data);
+      await profilePercentage(data);
     } catch (error) {
       console.log("Error while testing api :: ", error);
     }

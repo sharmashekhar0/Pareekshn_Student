@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import leftBg from "../../assets/LoginScreen/leftBg.jpg";
 import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import { FaAngleDown } from "react-icons/fa6";
@@ -20,6 +22,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function SignUp() {
+  const notify = () => toast("You have successfully registered!");
   const { register, handleSubmit } = useForm();
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -455,7 +458,7 @@ function SignUp() {
           <span className="font-medium">I agree to the Terms & Conditions</span>
         </div>
         <div className="rounded-full w-full text-white bg-[#1C4481] flex items-center justify-center py-3">
-          <button type="submit" className="w-full h-full">
+          <button type="submit" className="w-full h-full " onClick={notify}>
             Register
           </button>
         </div>

@@ -9,7 +9,7 @@ const newHackathonList = async (data) => {
       )
       .join("&");
     const response = await axios.post(
-      `${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/newList?${queryString}`,
+      `${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/hackathon/newList?${queryString}`,
       {},
       {
         headers: {

@@ -9,9 +9,11 @@ import getStudentProfile from "../../actions/Dashboard/getStudentProfile";
 import profilePercentage from "../../actions/Dashboard/profilePercentage";
 import EditProfile from "./EditProfile";
 import formatDate from "../../utils/formatDate";
+import UserProfile from "./UserProfile";
 
 function PersonalUpdate() {
   const [studentProfile, setStudentProfile] = useState({});
+  const [modelOpen, setModelOpen] = useState(false);
 
   const getStudentProfileHandler = async () => {
     try {
@@ -80,12 +82,13 @@ function PersonalUpdate() {
             <span className="text-sm text-[#1C4481]">First Name</span>
           </div>
           <input
+            disabled
             type="text"
             value={
               studentProfile &&
               extractName(studentProfile.student_name, "firstname")
             }
-            className="outline-none shadow-customShadow rounded-md h-9 px-4 w-5/6 text-md	 font-medium"
+            className="outline-none shadow-customShadow rounded-md h-9 px-4 w-5/6 text-md	 font-medium d"
           />
         </div>
         <div className="flex flex-col gap-2 w-1/2">
@@ -94,6 +97,7 @@ function PersonalUpdate() {
             <span className="text-sm text-[#1C4481]">Last Name</span>
           </div>
           <input
+            disabled
             type="text"
             value={
               studentProfile &&
@@ -110,6 +114,7 @@ function PersonalUpdate() {
             <span className="text-sm text-[#1C4481]">Please Select Gender</span>
           </div>
           <input
+            disabled
             type="text"
             value={studentProfile && formatGender(studentProfile.gender)}
             className="outline-none shadow-customShadow rounded-md h-9 px-4 w-5/6 text-md	 font-medium"
@@ -121,6 +126,7 @@ function PersonalUpdate() {
             <span className="text-sm text-[#1C4481]">Date of Birth*</span>
           </div>
           <input
+            disabled
             type="text"
             value={studentProfile && formatDate(studentProfile.date_of_birth)}
             className="outline-none shadow-customShadow rounded-md h-9 px-4 w-5/6 text-md	 font-medium"
@@ -134,6 +140,7 @@ function PersonalUpdate() {
             <span className="text-sm text-[#1C4481]">Email ID</span>
           </div>
           <input
+            disabled
             type="text"
             value={studentProfile && studentProfile.email_id}
             className="outline-none shadow-customShadow rounded-md h-9 px-4 w-5/6 text-md	 font-medium"
@@ -145,6 +152,7 @@ function PersonalUpdate() {
             <span className="text-sm text-[#1C4481]">Mobile Number</span>
           </div>
           <input
+            disabled
             type="text"
             value={studentProfile && studentProfile.mobile_no}
             className="outline-none shadow-customShadow rounded-md h-9 px-4 w-5/6 text-md	 font-medium"
@@ -158,6 +166,7 @@ function PersonalUpdate() {
             <span className="text-sm text-[#1C4481]">User Name</span>
           </div>
           <input
+            disabled
             type="text"
             value={studentProfile && studentProfile.user_name}
             className="outline-none shadow-customShadow rounded-md h-9 px-4 w-5/6 text-md	 font-medium"

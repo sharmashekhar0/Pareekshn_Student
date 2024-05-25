@@ -1,7 +1,7 @@
 import React from "react";
 import avatar from "/avatar.png";
 import profileComletion from "/profileCompletion.png";
-// import CorporateHackathonSidebar from "../CorporateHackathonSidebar";
+import CorporateHackathonDashboard from "../../pages/Hackathon/CorporateHackathonDashboard";
 import mock from "/mock.png";
 import start from "/start.png";
 import pack from "/pack.png";
@@ -29,15 +29,14 @@ import total from "../../assets/Hackathon/total.png";
 import totalcandidate from "../../assets/Hackathon/totalcandidate.png";
 import costtorecruit from "../../assets/Hackathon/costtorecruit.png";
 
-
 function CompletedHackathon() {
   return (
     <div className="min-h-screen flex">
-      {/* <CorporateHackathonSidebar /> */}
+      <CorporateHackathonSidebar />
       <div className="w-5/6 p-4">
         <div className="flex items-center justify-between mb-4 p-4">
           <span className="font-semibold text-[#1C4481] text-2xl">
-            Dashboard/{" "}
+            Dashboard/
             <span className="text-[18px] text-black">Completed Hackathon</span>
           </span>
         </div>

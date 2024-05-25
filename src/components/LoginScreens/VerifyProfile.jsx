@@ -27,7 +27,7 @@ function VerifyProfile() {
   };
 
   return (
-    <div className="w-1/4 bg-white rounded-3xl right-64 absolute border h-[460px] overflow-y-scroll no-scrollbar px-4 py-2 ">
+    <div className="w-1/4 bg-white rounded-3xl right-64 absolute border h-[460px]   px-4 py-2 ">
       <div className="flex justify-between items-center">
         <img
           src={arrowLeft}
@@ -40,7 +40,7 @@ function VerifyProfile() {
           <span className="font-semibold text-[#222222]">Profile</span>
         </div>
       </div>
-      <div className="flex flex-col gap-4 my-2 text-sm px-2">
+      <div className="h-96 flex flex-col gap-4 my-2 text-sm px-2 overflow-y-scroll  scrollbar-blue ">
         <div className="border border-[#000000] rounded-md px-2 py-1">
           <div className="flex items-center gap-2 text-[#1C4481]">
             <img src={userProfile} alt="" className="h-5 w-5" />
@@ -143,7 +143,7 @@ function VerifyProfile() {
         </div>
         <button
           onClick={verifyProfileHandler}
-          className="h-10 mb-2 w-full bg-[#1C4481] text-white font-medium flex items-center justify-center rounded-full"
+          className="h-14 py-2 mb-2 w-full bg-[#1C4481] text-white font-medium flex items-center justify-center rounded-full"
         >
           <span>Verify</span>
         </button>

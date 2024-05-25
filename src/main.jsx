@@ -55,12 +55,23 @@ import { TbProgressBolt } from "react-icons/tb";
 import Progress from "./components/Hackathon/ProgressBar.jsx";
 import RejectedHackathon from "./components/Hackathon/RejectedHackathon.jsx";
 import EditProfileUpdate from "./components/Dashboard/EditProfileUpdate.jsx";
-
+import AddEmployment from "./components/Dashboard/AddEmployment.jsx";
+import AddCareerProfile from "./components/Dashboard/AddCareerProfile.jsx";
+import AddSkills from "./components/Dashboard/AddSkills.jsx";
+import AddResume from "./components/Dashboard/AddResume.jsx";
+import StudentExams from "./components/Dashboard/StudentExams.jsx";
+import AttemptedExam from "./components/Dashboard/AttemptedExam.jsx";
+import AudioPlayer from "./components/Exams/AudioPlayer.jsx";
+import Descriptive from "./components/Exams/Descriptive.jsx";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ExamFeeDetails from "./components/Dashboard/ExamFeeDetails.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      {/* <Route path="/ui-testing" element={<ApiTesting />}></Route> */}
-      <Route path="/ui-testing" element={<EditProfileUpdate />}></Route>
+      <Route path="/ui-testing" element={<enrolledHackathonList />}></Route>
+      <Route path="/ui-testing2" element={<AddResume />}></Route>
+      {/* <Route path="/ui-testing" element={<AddEmployment />}></Route> */}
       {/* <Route path="/edit-profile" element={<EditProfile />}></Route> */}
       <Route path="/add-Education" element={<AddEducation />}></Route>
       <Route path="/" element={<LoginScreen />}>
@@ -109,8 +120,20 @@ const router = createBrowserRouter(
         ></Route>
       </Route>
       <Route path="/welcome" element={<Instruction />}></Route>
+      <Route path="/exams" element={<Question />}>
+        <Route path="/exams/audioPlayer" element={<AudioPlayer />}></Route>
+        <Route path="/exams/descriptive" element={<Descriptive />}></Route>
+      </Route>
       <Route path="/dashboard" element={<StudentDashboard />}>
         <Route path="/dashboard/exams" element={<Exams />}></Route>
+        <Route
+          path="/dashboard/hackathon/corporatehackathondashboard"
+          element={<CorporateHackathonDashboard1 />}
+        ></Route>
+        <Route
+          path="/dashboard/studentexams"
+          element={<StudentExams />}
+        ></Route>
         <Route
           path="/dashboard/hackathon/completedhackathon"
           element={<CompletedHackathon />}
@@ -146,6 +169,10 @@ const router = createBrowserRouter(
         <Route
           path="/dashboard/hackathon/progress"
           element={<Progress />}
+        ></Route>
+        <Route
+          path="/dashboard/examfeedetails"
+          element={<ExamFeeDetails />}
         ></Route>
         <Route
           path="/dashboard/hackathon/rejectedhackathon"
@@ -214,18 +241,17 @@ const router = createBrowserRouter(
         ></Route>
       </Route>
       <Route path="/testing" element={<ApiTesting />}></Route>
-      <Route path="/exam">
-        <Route path="/exam/question" element={<Question />}></Route>
-      </Route>
+
       <Route path="/welcome" element={<Instruction />}></Route>
     </Route>
   )
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
-  <RouterProvider router={router}>
-    <App />
-  </RouterProvider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <RouterProvider router={router}>
+      <App />
+    </RouterProvider>
+    <ToastContainer />
+  </React.StrictMode>
 );

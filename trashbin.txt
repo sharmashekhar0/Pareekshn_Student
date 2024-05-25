@@ -1,3 +1,283 @@
+null
+ 
+null
+ 
+{list?.sector}
+ 
+  ))}
+ 
+{hackathonList &&
+                        hackathonList?.map((list) => (
+ 
+IT Sector
+ 
+text-[#1C4481]
+ 
+bg-white
+ 
+10
+ 
+<div className="w-full h-40 bg-white rounded-3xl">
+            <div className="flex h-1/2 items-center justify-between p-6">
+              <div className="flex flex-col">
+                <span>
+                  <span className="text-[#1C4481] font-semibold">Exam -</span>{" "}
+                  ME-8358
+                </span>
+                <span className="text-sm text-[#1C4481] font-medium">
+                  Sector - General Awareness
+                </span>
+              </div>
+              <div className="flex items-center bg-[#1C4481] h-10 w-48 rounded-full justify-center">
+                <div className="flex items-center gap-2">
+                  <span className="text-white ">Enroll & Start</span>
+                  <img src={start} alt="" />
+                </div>
+              </div>
+            </div>
+            <hr class="border-t-[1px] border-[#1C4481]" />
+            <div className="flex justify-between p-6  text-[#1C4481]">
+              <div className="flex items-center gap-2">
+                <img src={pack} alt="" className="h-8" />
+                <div className="flex flex-col text-[12px]">
+                  <span>Qualification Pack</span>
+                  <span className="font-semibold">Level 3</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <img src={code} alt="" className="h-8" />
+                <div className="flex flex-col text-[12px]">
+                  <span>Qualification Code</span>
+                  <span className="font-semibold">L-03</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <img src={duration} alt="" className="h-8" />
+                <div className="flex flex-col text-[12px]">
+                  <span>Exam Duration</span>
+                  <span className="font-semibold">12 Mins</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <img src={passcode} alt="" className="h-8" />
+                <div className="flex flex-col text-[12px]">
+                  <span>Exam Passcode</span>
+                  <span className="font-semibold">8330WW216016</span>
+                </div>
+              </div>
+            </div>
+          </div>
+ 
+<span className="font-semibold" onClick={() => setShowPages(true)}>
+            Hackathon
+          </span>
+ 
+  const [examList, setExamList] = useState(null);
+  const [errors, setErrors] = useState([]);
+ 
+ const getDashboardExamList = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      console.log("User :: ", user);
+      const data = {
+        usercode: user.usercode,
+        id_self_student: user.id_self_student,
+      };
+      const response = await dashboardExamList(data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getDashboardExamList();
+  }, []);
+ 
+h-[]
+ 
+xl
+ 
+mt-10
+ 
+<div className="flex items-center justify-between mb-14">
+          <span className="font-semibold text-[#1C4481] text-2xl">
+            Dashboard
+          </span>
+          <div className="flex items-center w-1/5 justify-between">
+            <div className="flex items-center gap-2 w-full h-14 border-2 border-[#1C4481] px-1 rounded-[100px]">
+              <img src={avatar} alt="" className="h-10 m-1" />
+              <div className="flex flex-col text-sm">
+                <span className="font-semibold text-[#305187]">Welcome</span>
+                <span className="font-medium">User TP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+ 
+ </Link>
+ 
+<button onClick={goToExams}>Go to Exams</button>
+            <button onClick={goToHackathon}>Go to Hackathon</button>
+ 
+ <button onClick={goToExams}>Go to Exams</button>
+            <button onClick={goToHackathon}>Go to Hackathon</button>
+ 
+ const history = useHistory();
+  const goToExams = () => {
+    // Navigate to the Exams section
+    history.push("/dashboard/exams");
+  };
+  const goToHackathon = () => {
+    // Navigate to the Hackathon section
+    history.push("/dashboard/hackathon");
+  };
+ 
+<Route
+          path="/dashboard/hackathon"
+          element={<CompletedHackathon />}
+        ></Route>
+ 
+gap-5 justify-around
+ 
+<div className="relative h-12 w-1/2">
+              <div>
+                <input
+                  type="text"
+                  id="floating_filled"
+                  className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
+                  placeholder=""
+                  {...register("username", {
+                    required: true,
+                  })}
+                />
+                <div
+                  htmlFor="floating_filled"
+                  className="absolute text-base pl-5 text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+                >
+                  <IoPerson className="absolute top-1/2 left-2 transform -translate-y-1/2 text-[#1C4481]" />
+                  <label htmlFor="" className="pl-2">
+                    Designation
+                  </label>
+                </div>
+              </div>
+ 
+ Completion year
+ 
+Role in Project
+
+ 
+Add Project to show your Experience
+ 
+Certification Compleltion ID
+ 
+gap-5 justify-around
+ 
+ <div className="relative h-14 mb-3 w-1/2">
+              <div>
+                <select
+                  id="qualification_select"
+                  className="block pl-8 pr-3 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
+                  defaultValue=""
+                  onChange={(e) => handleSelectQualification(e.target.value)}
+                  {...register("qualification", { required: true })}
+                >
+                  <option value="" disabled hidden>
+                    Information Technology
+                  </option>
+                  {highestQualication?.map((qualName) => (
+                    <option key={qualName?.id} value={qualName.id}>
+                      {qualName.highest_qualification}
+                    </option>
+                  ))}
+                </select>
+                <div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
+                  {/* <FaAngleDown /> */}
+                </div>
+                <div
+                  htmlFor="floating_filled"
+                  className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+                >
+                  <img src={message} alt="" className="h-5 w-5" />
+                  <label htmlFor="" className="pl-2">
+                    Sector
+                  </label>
+                </div>
+              </div>
+              {errors.id_hq && (
+                <div className="error text-red-600 font-medium text-sm">
+                  {errors?.id_hq}
+                </div>
+              )}
+ 
+   <h1 className="px-5 mt-5 font-semibold">IT Skills</h1>
+
+          <hr className="border-black mt-1 mx-4"></hr>
+        </div>
+ 
+</div>
+ 
+className="mt-7"
+ 
+items-center justify-center
+ 
+gap-5 justify-around
+ 
+<div className="relative h-14 mb-3 w-1/2">
+              <div>
+                <select
+                  id="qualification_select"
+                  className="block pl-8 pr-3 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
+                  defaultValue=""
+                  onChange={(e) => handleSelectQualification(e.target.value)}
+                  {...register("qualification", { required: true })}
+                >
+                  <option value="" disabled hidden>
+                    1
+                  </option>
+                  {highestQualication?.map((qualName) => (
+                    <option key={qualName?.id} value={qualName.id}>
+                      {qualName.highest_qualification}
+                    </option>
+                  ))}
+                </select>
+                <div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
+                  {/* <FaAngleDown /> */}
+                </div>
+                <div
+                  htmlFor="floating_filled"
+                  className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+                >
+                  <img src={message} alt="" className="h-5 w-5" />
+                  <label htmlFor="" className="pl-2">
+                    Level
+                  </label>
+                </div>
+              </div>
+              {errors.id_hq && (
+                <div className="error text-red-600 font-medium text-sm">
+                  {errors?.id_hq}
+                </div>
+              )}
+            </div>
+ 
+Information and Tech
+ 
+border border-blue-500
+ 
+ shadow-lg
+ 
+Information Technology
+ 
+Information Technology
+ 
+<div></div>;
+ 
+School
+ 
+School
+ 
+gap-5 justify-around
+ 
+ dark:focus:ring-blue-600
+ 
 2/3
  
 white
