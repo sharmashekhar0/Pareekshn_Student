@@ -8,18 +8,65 @@ import message from "../../assets/LoginScreen/message.png";
 import gender from "../../assets/LoginScreen/gender.png";
 import date from "../../assets/LoginScreen/date.png";
 import userProfile from "../../assets/LoginScreen/userProfile.png";
-
+import getHighQualList from "../../actions/LoginScreens/getHighQualList";
+import getStates from "../../actions/LoginScreens/getStates";
+import getCities from "../../actions/LoginScreens/getCities";
 import { FaAngleDown } from "react-icons/fa6";
 import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 function VerifyProfile() {
 	const navigate = useNavigate();
+	const { register, handleSubmit } = useForm();
+	const [highestQualication, setHighestQualication] = useState([]);
+	const [states, setStates] = useState([]);
+	const [districts, setDistricts] = useState([]);
+	const [selectedState, setSelectedState] = useState("");
 
 	const verifyProfileHandler = async () => {
 		try {
 			navigate("/login-with-passcode/upload-photo");
 		} catch (error) {
 			console.log("Error while verifing profile :: ", error);
+		}
+	};
+
+	const preData = async () => {
+		try {
+			const highQual = await getHighQualList();
+			const indianStates = await getStates();
+			setHighestQualication(highQual?.data?.high_qual);
+			setStates(indianStates?.data?.states);
+		} catch (error) {
+			console.log(
+				"Error while getting highest qualification or states :: ",
+				error
+			);
+		}
+	};
+
+	useEffect(() => {
+		preData();
+	}, []);
+
+	const handleStateChange = (e) => {
+		setSelectedState(e.target.value);
+		getCitiesHandler(e.target.value);
+		console.log("State :: ", e.target.value);
+	};
+
+	const getCitiesHandler = async (id) => {
+		try {
+			console.log("Id :: ", id);
+			const data = {
+				id_state: id,
+			};
+			const response = await getCities(data);
+			setDistricts(response?.data?.cities);
+			console.log("Cities :: ", response?.data?.cities);
+		} catch (error) {
+			console.log("Error while getting cities :: ", error);
 		}
 	};
 
@@ -39,105 +86,219 @@ function VerifyProfile() {
 				</div>
 			</div>
 			<div className="flex flex-col gap-4 my-2 text-sm px-2">
-				<div className="border border-[#000000] rounded-md px-2 py-1">
-					<div className="flex items-center gap-2 text-[#1C4481]">
-						<img src={userProfile} alt="" className="h-5 w-5" />
-						<span>Candidate Name</span>
-					</div>
-					<input
-						className="outline-none px-7 placeholder:text-black"
-						placeholder="Kuldeep"
-					/>
-				</div>
-				<div className="border border-black rounded-md px-2 py-1">
-					<div className="flex  items-center gap-2 text-[#1C4481]">
-						<img src={gender} alt="" className="h-5 w-5" />
-						<span>Gender</span>
-					</div>
-					<div className="flex items-center justify-between">
+				<div className="relative h-14 mb-3 ">
+					<div>
 						<input
-							className="outline-none px-7 placeholder:text-black"
-							placeholder="Male"
+							type="text"
+							id="floating_filled"
+							className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
+							placeholder=""
+							{...register("candidateName", { required: true })}
 						/>
-						<FaAngleDown />
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<img src={userProfile} alt="" className="h-5 w-5" />
+							<label htmlFor="" className="pl-2">
+								Candidate Name
+							</label>
+						</div>
 					</div>
 				</div>
-				<div className="border border-black rounded-md px-2 py-1">
-					<div className="flex  items-center gap-2 text-[#1C4481]">
-						<img src={date} alt="" className="h-5 w-5" />
-						<span>Date of Birth*</span>
+				<div className="relative h-14">
+					<div>
+						<select
+							id="gender_select"
+							className="block pl-8 pr-3 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
+							defaultValue=""
+							onChange={(e) => handleSelectGender(e.target.value)}
+							{...register("gender", { required: true })}
+						>
+							<option value="" disabled hidden>
+								Please Select Gender
+							</option>
+							<option value="1">Male</option>
+							<option value="2">Female</option>
+							<option value="3">Transgender</option>
+						</select>
+						<div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
+							{/* <FaAngleDown /> */}
+						</div>
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<img src={gender} alt="" className="h-5 w-5" />
+							<label htmlFor="" className="pl-2">
+								Gender
+							</label>
+						</div>
 					</div>
-					<div className="flex items-center justify-between">
+				</div>
+				<div className="relative h-14">
+					<div>
 						<input
-							className="outline-none px-7 placeholder:text-black"
-							placeholder="17/08/2001"
+							type="date"
+							id="floating_filled"
+							className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
+							placeholder=""
+							{...register("dob", {
+								required: true,
+							})}
 						/>
-						<FaRegCalendar />
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<img src={date} alt="" className="h-5 w-5" />
+							<label htmlFor="" className="pl-2">
+								Date of Birth*
+							</label>
+						</div>
 					</div>
 				</div>
-				<div className="border border-black rounded-md px-2 py-1">
-					<div className="flex  items-center gap-2 text-[#1C4481]">
-						<img src={message} alt="" className="h-5 w-5" />
-						<span>Email*</span>
+				<div className="relative h-14">
+					<div>
+						<input
+							type="text"
+							id="floating_filled"
+							className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
+							placeholder=""
+							{...register("email", { required: true })}
+						/>
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<img src={message} alt="" className="h-5 w-5" />
+							<label htmlFor="" className="pl-2">
+								Email*
+							</label>
+						</div>
 					</div>
-					<input
-						className="outline-none px-7 placeholder:text-black"
-						placeholder="Kuldeep@gmail.com"
-					/>
 				</div>
-				<div className="border border-black rounded-md px-2 py-1">
-					<div className="flex  items-center gap-2 text-[#1C4481]">
-						<img src={tablet} alt="" className="h-5 w-5" />
-						<span>Mobile Number*</span>
+				<div className="relative h-14">
+					<div>
+						<input
+							type="text"
+							id="floating_filled"
+							className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
+							placeholder=""
+							{...register("mobile", { required: true })}
+						/>
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<img src={tablet} alt="" className="h-5 w-5" />
+							<label htmlFor="" className="pl-2">
+								Mobile Number*
+							</label>
+						</div>
 					</div>
-					<input
-						className="outline-none px-7 placeholder:text-black"
-						placeholder="6321145888"
-					/>
 				</div>
-				<div className="border border-black rounded-md px-2 py-1">
-					<div className="flex  items-center gap-2 text-[#1C4481]">
-						<img src={user} alt="" className="h-4 w-5" />
-						<span>Aadhar Number*</span>
+				<div className="relative h-14">
+					<div>
+						<select
+							id="qualification_select"
+							className="block pl-8 pr-3 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
+							defaultValue=""
+							onChange={(e) =>
+								handleSelectQualification(e.target.value)
+							}
+							{...register("qualification", { required: true })}
+						>
+							<option value="" disabled hidden>
+								Select Your Qualification
+							</option>
+							{highestQualication?.map((qualName) => (
+								<option key={qualName?.id} value={qualName.id}>
+									{qualName.highest_qualification}
+								</option>
+							))}
+						</select>
+						<div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
+							{/* <FaAngleDown /> */}
+						</div>
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<img src={message} alt="" className="h-5 w-5" />
+							<label htmlFor="" className="pl-2">
+								Highest Qualification
+							</label>
+						</div>
 					</div>
-					<input
-						className="outline-none px-7 placeholder:text-black"
-						placeholder="654123658987"
-					/>
-					<span className="px-7"></span>
 				</div>
-				<div className="border border-black rounded-md px-2 py-1">
-					<div className="flex  items-center gap-2 text-[#1C4481]">
-						<img src={user} alt="" className="h-4 w-5" />
-						<span>Qualification</span>
+				<div className="relative h-14">
+					<div>
+						<select
+							id="state_select"
+							className="block pl-8 pr-3 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
+							defaultValue=""
+							onChange={(e) => handleStateChange(e)}
+						>
+							<option value="" disabled hidden>
+								Select State
+							</option>
+							{states?.map((state) => (
+								<option
+									key={state?.id_state}
+									value={state.id_state}
+								>
+									{state.state}
+								</option>
+							))}
+						</select>
+						<div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
+							{/* <FaAngleDown /> */}
+						</div>
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<img src={message} alt="" className="h-5 w-5" />
+							<label htmlFor="" className="pl-2">
+								State
+							</label>
+						</div>
 					</div>
-					<input
-						className="outline-none px-7 placeholder:text-black"
-						placeholder="Graduation"
-					/>
-					<span className="px-7"></span>
 				</div>
-				<div className="border border-black rounded-md px-2 py-1">
-					<div className="flex  items-center gap-2 text-[#1C4481]">
-						<img src={user} alt="" className="h-4 w-5" />
-						<span>State</span>
+				<div className="relative h-14">
+					<div>
+						<select
+							id="state_select"
+							className="block pl-8 pr-3 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
+							defaultValue=""
+							{...register("district")}
+						>
+							<option value="" disabled hidden>
+								Select District
+							</option>
+							{districts?.map((district) => (
+								<option
+									key={district?.id_city}
+									value={district.id_city}
+								>
+									{district?.city}
+								</option>
+							))}
+						</select>
+						<div className="flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-between">
+							{/* <FaAngleDown /> */}
+						</div>
+						<div
+							htmlFor="floating_filled"
+							className="absolute text-base text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"
+						>
+							<img src={message} alt="" className="h-5 w-5" />
+							<label htmlFor="" className="pl-2">
+								District
+							</label>
+						</div>
 					</div>
-					<input
-						className="outline-none px-7 placeholder:text-black"
-						placeholder="Gujrat"
-					/>
-					<span className="px-7"></span>
-				</div>
-				<div className="border border-black rounded-md px-2 py-1">
-					<div className="flex  items-center gap-2 text-[#1C4481]">
-						<img src={user} alt="" className="h-4 w-5" />
-						<span>District</span>
-					</div>
-					<input
-						className="outline-none px-7 placeholder:text-black"
-						placeholder="Gujrat"
-					/>
-					<span className="px-7"></span>
 				</div>
 				<button
 					onClick={verifyProfileHandler}

@@ -30,6 +30,9 @@ import ImageOptions from "../../components/Exams/ImageOptions";
 import QuestionSection from "../../components/Exams/QuestionSection";
 import Descriptive from "../../components/Exams/Descriptive";
 import Record from "../../components/Exams/Record";
+import AudioPlayer from "../../components/Exams/AudioPlayer";
+import VideoPlayer from "../../components/Exams/VideoPlayer";
+import ImageQuestion from "../../components/Exams/ImageQuestion";
 
 function Question() {
 	const [time, setTime] = useState(600);
@@ -157,7 +160,10 @@ function Question() {
 							</div>
 						</div>
 						<div className="border-t-2 border-[#c2c2c2]"></div>
-						<QuestionSection />
+						{/* <QuestionSection /> */}
+						{/* <AudioPlayer /> */}
+						{/* <VideoPlayer /> */}
+						<ImageQuestion />
 						<div className="border-t border-[#c2c2c2]"></div>
 						<div className="w-full h-32 flex items-center justify-between px-8">
 							<div className="flex flex-col items-center gap-2">
@@ -223,10 +229,11 @@ function Question() {
 					<div className="w-1/2 mt-1">
 						<div className="bg-[#F3F7FF] mx-4 rounded-xl p-6 flex flex-col gap-6">
 							<span className="font-semibold">Ans.</span>
-							{/* <TextOptions /> */}
+							<TextOptions />
 							{/* <TextOptions /> */}
 							{/* <Descriptive /> */}
-							<Record />
+							{/* <Record /> */}
+							{/* <A /> */}
 						</div>
 					</div>
 				</div>

@@ -4,10 +4,17 @@ import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import leftBg from "../../assets/LoginScreen/leftBg.jpg";
 import forgetUsername from "../../actions/LoginScreens/forgetUsername";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 function ForgetUsername() {
 	const { register, handleSubmit } = useForm();
 	const [message, setMessage] = useState(false);
+
+	const navigate = useNavigate();
+
+	const goBack = () => {
+		navigate(-1);
+	};
 
 	const forgetUsernameHandler = async (formData) => {
 		try {
@@ -40,7 +47,8 @@ function ForgetUsername() {
 					<img
 						src={arrowLeft}
 						alt=""
-						className="bg-[#1C4481] w-6 h-6 rounded-full"
+						className="bg-[#1C4481] w-6 h-6 rounded-full cursor-pointer"
+						onClick={goBack}
 					/>
 					<div className="flex flex-col items-end">
 						<span className="font-semibold text-[#AFAFAF]">
