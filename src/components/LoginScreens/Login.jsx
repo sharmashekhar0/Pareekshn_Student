@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const { register, handleSubmit } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({});

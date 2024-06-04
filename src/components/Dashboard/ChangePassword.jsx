@@ -51,7 +51,6 @@ function ChangePassword() {
         </div>
         <div>
           <input
-            disabled
             type="password"
             placeholder="**************"
             className="outline-none focus:outline-none px-7 placeholder:text-black text-lg w-full border-none"
@@ -66,7 +65,6 @@ function ChangePassword() {
         </div>
         <div>
           <input
-            disabled
             type="password"
             placeholder="**************"
             className="outline-none px-7 placeholder:text-black text-lg w-full border-none"
@@ -81,7 +79,6 @@ function ChangePassword() {
         </div>
         <div>
           <input
-            disabled
             type="password"
             placeholder="**************"
             className="outline-none px-7 placeholder:text-black text-lg w-full border-none"

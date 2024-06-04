@@ -28,8 +28,8 @@ function EnterLoginPasscode() {
       };
       await passcodeSchema.validate(formData, { abortEarly: false });
       const response = await loginWithPasscode(data);
-      if (response?.data?.login_code === 1000) {
-        navigate("/verify-profile");
+      if (response?.data?.code === 1000) {
+        navigate("/login-with-passcode/verify-profile");
       }
     } catch (error) {
       console.log("Error while logging with passcode :: ", error);

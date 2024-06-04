@@ -1,8 +1,10 @@
+import { BLANK_MSG, TRY_AGAIN_MSG } from "../../constants";
 import React from "react";
 import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import { IoPerson } from "react-icons/io5";
 import { FaRegCalendar } from "react-icons/fa";
 import user from "../../assets/LoginScreen/User.png";
+``;
 import tablet from "../../assets/LoginScreen/Tablet.png";
 import message from "../../assets/LoginScreen/message.png";
 import gender from "../../assets/LoginScreen/gender.png";

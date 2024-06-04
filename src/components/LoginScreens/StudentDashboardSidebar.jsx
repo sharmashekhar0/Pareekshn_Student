@@ -35,7 +35,7 @@ function StudentDashboardSidebar() {
         <img src={logo} alt="" className="h-20" />
         <div className="py-4 flex flex-col">
           <Link to={"/dashboard/exams"}>
-            <div className="flex items-center w-4/5 h-12 rounded-e-full bg-white text-[#1C4481] gap-2 py-2 px-4">
+            <div className="flex items-center cursor-pointer w-4/5 h-12 rounded-e-full bg-white text-[#1C4481] gap-2 py-2 px-4">
               <img src={dashboard} alt="" />
               <span className="font-semibold">Dashboard</span>
             </div>

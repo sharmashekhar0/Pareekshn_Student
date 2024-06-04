@@ -1,10 +1,10 @@
-import axios from "axios";
 import { PUBLIC_REST_API_ENDPOINT, BEARER_TOKEN } from "../../constants";
+import axios from "axios";
 
-const getStates = async (data) => {
+const myProfile = async (data) => {
   try {
     const response = await axios.post(
-      `${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/getStates`,
+      `${PUBLIC_REST_API_ENDPOINT}/amsapi/studentSelf/getStudentProfile`,
       {},
       {
         headers: {
@@ -19,4 +19,4 @@ const getStates = async (data) => {
   }
 };
 
-export default getStates;
+export default myProfile;
