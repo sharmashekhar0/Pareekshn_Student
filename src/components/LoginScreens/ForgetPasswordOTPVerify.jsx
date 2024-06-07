@@ -44,7 +44,7 @@ function ForgetPasswordOTPVerify() {
         <img
           src={leftBg}
           alt=""
-          className="w-full h-full absolute inset-0 object-fill"
+          className="w-full h-full  cursor-pointer absolute inset-0 object-fill"
         />
       </div>
       <div className="w-1/2 bg-white rounded-3xl border h-2/3 p-4 z-[1]">

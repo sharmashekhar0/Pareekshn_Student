@@ -59,7 +59,7 @@ function ResetPassword() {
         <img
           src={leftBg}
           alt=""
-          className="w-full h-full absolute inset-0 object-fill"
+          className="w-full h-full absolute  cursor-pointer inset-0 object-fill"
         />
       </div>
       <form

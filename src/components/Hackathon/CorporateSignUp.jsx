@@ -33,7 +33,7 @@ function CorporateSignUp() {
         <img
           src={leftBg}
           alt=""
-          className="w-full h-full absolute inset-0 object-fill"
+          className="w-full h-full absolute inset-0 object-fill cursor-pointer"
         />
       </div>
       <div className="bg-[#ffffff] h-4/5 w-3/4 lg:w-4/5 xl:w-2/3 rounded-3xl p-6 flex flex-col gap-4 relative z-10">
