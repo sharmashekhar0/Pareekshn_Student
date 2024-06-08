@@ -1,19 +1,12 @@
 import React from "react";
 import logo from "/logo.png";
-import avatar from "/avatar.png";
 import questionMark from "/questionMark.png";
 import logout from "/logout.png";
-import arrowDown from "/arrowDown.png";
-import arrow from "/arrow.png";
-import indicator from "/indicator.png";
-import mandatory from "/mandatory.png";
-import volume from "/volume.png";
 import reset from "/reset1.png";
 import previous from "/previous.png";
 import play from "/play.png";
 import next from "/next.png";
 import lock from "/lock.png";
-import timer from "/timer.png";
 import translate from "../../assets/LoginScreen/translate.png";
 import angleDown from "../../assets/LoginScreen/angleDown.png";
 import indicatorExam from "../../assets/LoginScreen/indicatorExam.png";
@@ -21,30 +14,31 @@ import questionIndicator from "../../assets/LoginScreen/questionIndicator.png";
 import info from "../../assets/LoginScreen/Info.png";
 import speak from "../../assets/LoginScreen/speak.png";
 import livevideo from "../../assets/LoginScreen/livevideo.png";
-import image from "../../assets/LoginScreen/image.png";
+import logoutUser from "../../actions/LoginScreens/logout";
 
 import { useState, useEffect } from "react";
-import ChooseLanguage from "../../components/Exams/ChooseLanguage";
 import TextOptions from "../../components/Exams/TextOptions";
-import ImageOptions from "../../components/Exams/ImageOptions";
 import QuestionSection from "../../components/Exams/QuestionSection";
-import Descriptive from "../../components/Exams/Descriptive";
-import Record from "../../components/Exams/Record";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import getStudentProfile from "../../actions/Dashboard/getStudentProfile";
-import vivaQuestionIndex from "../../actions/Viva/vivaQuestionIndex";
+import getExam from "../../actions/LoginScreens/getExam";
 
 function Question() {
+	const navigate = useNavigate();
+	const [user, setUser] = useState({});
 	const [time, setTime] = useState(600);
 	const [studentProfile, setStudentProfile] = useState({});
-	const [questions, setQuestions] = useState([]);
+	const [questions, setQuestions] = useState({});
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-	const [userAnswers, setUserAnswers] = useState([]);
+	const [examInitial, setExamInitial] = useState({});
+	const questionsList = [];
 
 	const getStudentData = async () => {
 		try {
 			const user = JSON.parse(localStorage.getItem("user"));
 			console.log("User :: ", user);
+			setUser(user);
+			getExamHandler(user);
 			const data = {
 				usercode: user.usercode,
 				id_self_student: user.id_self_student,
@@ -59,55 +53,40 @@ function Question() {
 		}
 	};
 
-	const getQuestions = async () => {
+	const getExamHandler = async (user) => {
 		try {
-			const user = JSON.parse(localStorage.getItem("user"));
 			const data = {
-				usercode: user.usercode,
-				id_self_student: user.id_self_student,
-				exam_id: 8582,
-				student_id: 211158,
-				req_by: "web",
+				exam_id: 8565,
+				shuffle_ans: 0,
+				shuffle_ques: 1,
+				student_id: user?.id_self_student,
+				usercode: user?.usercode,
 			};
-			const response = await vivaQuestionIndex(data);
-			if (response?.data?.code === 1000)
-				setQuestions(response?.data?.question);
+			console.log(data);
+			const response = await getExam(data);
+			console.log("Exam Initial Response :: ", response);
+			console.log(response?.data?.exams);
+			setExamInitial(response?.data?.exams);
+			setQuestions(response?.data?.exams?.question);
+			const totalQuestion = response?.data?.exams?.totalq;
+			for (let i = 1; i <= totalQuestion; i++) {
+				questionsList.push(
+					<li>
+						<div className="bg-[#A6E097] h-8 w-8 flex items-center justify-center rounded-lg font-semibold text-lg text-[#14540E]">
+							<span>{i}</span>
+						</div>
+					</li>
+				);
+			}
+			console.log(questionsList);
 		} catch (error) {
-			console.log("Error while getting data :: ", error);
+			console.log("Error while getting exam :: ", error);
 		}
 	};
 
 	useEffect(() => {
-		const timer = setInterval(() => {
-			if (time > 0) {
-				setTime((prevTime) => prevTime - 1);
-			} else {
-				setTime(600); // restart the timer after 10 minutes
-			}
-		}, 1000); // update every second
-
 		getStudentData();
-		getQuestions();
-		return () => clearInterval(timer); // cleanup the timer on component unmount
 	}, []);
-
-	const handleNextQuestion = () => {
-		if (currentQuestionIndex < questions.length - 1) {
-			setCurrentQuestionIndex(currentQuestionIndex + 1);
-		}
-	};
-
-	const handlePreviousQuestion = () => {
-		if (currentQuestionIndex > 0) {
-			setCurrentQuestionIndex(currentQuestionIndex - 1);
-		}
-	};
-
-	const handleAnswerChange = (answer) => {
-		const updatedAnswers = [...userAnswers];
-		updatedAnswers[currentQuestionIndex] = answer;
-		setUserAnswers(updatedAnswers);
-	};
 
 	const formatTime = (seconds) => {
 		const mins = Math.floor(seconds / 60);
@@ -116,6 +95,23 @@ function Question() {
 			2,
 			"0"
 		)}`;
+	};
+
+	const logoutHandler = async () => {
+		try {
+			const user = JSON.parse(localStorage.getItem("user"));
+			const data = {
+				usercode: user?.usercode,
+				id_self_student: user?.id_self_student,
+			};
+			const response = await logoutUser(data);
+			console.log(response);
+			if (response?.data?.code === 1000) {
+				navigate("/");
+			}
+		} catch (error) {
+			console.log("Error while logging out user :: ", error);
+		}
 	};
 
 	return (
@@ -142,7 +138,12 @@ function Question() {
 							</div>
 						</div>
 						<div className="flex gap-3 h-14">
-							<img src={logout} alt="" />
+							<img
+								src={logout}
+								alt=""
+								onClick={logoutHandler}
+								className="cursor-pointer"
+							/>
 							<img src={questionMark} alt="" />
 						</div>
 					</div>
@@ -159,7 +160,7 @@ function Question() {
 									Default Language
 								</span>
 								<span className="font-bold">
-									{questions.lang}
+									{questions?.lang}
 								</span>
 							</div>
 							<div className="flex items-center gap-5">
@@ -185,18 +186,9 @@ function Question() {
 								alt=""
 								className="h-5 "
 							/>
-							{questions.map((q, index) => (
-								<div
-									key={index}
-									className={`h-8 w-8 flex items-center justify-center rounded-lg font-semibold text-lg ${
-										currentQuestionIndex === index
-											? "bg-[#A6E097] text-[#14540E]"
-											: "border-2 border-[#14540E] text-[#14540E]"
-									}`}
-								>
-									{index + 1}
-								</div>
-							))}
+							<div className="flex justify-between w-full px-4 overflow-x-scroll no-scrollbar">
+								{questionsList}
+							</div>
 							<img
 								src={questionIndicator}
 								alt=""
@@ -215,16 +207,12 @@ function Question() {
 						<div className="w-1/2 ml-8 px-2 mt-1 border-r flex flex-col gap-4">
 							<div className="flex mt-6 justify-between items-center">
 								<span className="font-semibold text-[#1C4481]">
-									{questions[currentQuestionIndex]?.title}
+									{/* {questions[currentQuestionIndex]?.title} */}
 								</span>
 								<div className="flex items-center gap-3">
 									<div className="h-8 border-[#14540E] border w-28 flex items-center justify-center rounded-full text-sm">
 										<span className="font-semibold text-[#5F5F5F]">
 											Max Marks{" "}
-											{
-												questions[currentQuestionIndex]
-													?.max_marks
-											}
 										</span>
 									</div>
 									<div className="bg-[#FAFF0D] px-3 rounded-full h-9 flex items-center justify-center font-medium gap-1 text-sm">
@@ -233,16 +221,17 @@ function Question() {
 											alt=""
 											className="h-4"
 										/>
-										<span>It is Mandatory Question</span>
+										{questions?.question_inst && (
+											<span>
+												{questions?.question_inst}
+											</span>
+										)}
 									</div>
 									<img src={speak} alt="" className="h-7" />
 								</div>
 							</div>
 							<div className="border-t-2 border-[#c2c2c2]"></div>
-							<QuestionSection
-								question={questions[currentQuestionIndex]}
-								onAnswerChange={handleAnswerChange}
-							/>
+							<QuestionSection />
 							<div className="border-t border-[#c2c2c2]"></div>
 							<div className="w-full h-32 flex items-center justify-between px-8">
 								<div className="flex flex-col items-center gap-2">
@@ -313,9 +302,6 @@ function Question() {
 							<div className="bg-[#F3F7FF] mx-4 rounded-xl p-6 flex flex-col gap-6">
 								<span className="font-semibold">Ans.</span>
 								<TextOptions />
-								{/* <TextOptions /> */}
-								{/* <Descriptive /> */}
-								{/* <Record /> */}
 							</div>
 						</div>
 					</div>

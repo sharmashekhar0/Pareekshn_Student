@@ -1,58 +1,25 @@
 import { BLANK_MSG, TRY_AGAIN_MSG } from "../../constants";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import { useNavigate } from "react-router";
 import verifyOTP from "../../actions/LoginScreens/verifyOTP";
+//import { useNavigate } from "react-router-dom";
 import SlidingMessage from "../ApiResponse";
 import { useForm } from "react-hook-form";
-import resendOTP from "../../actions/LoginScreens/resendOTP";
-import * as Yup from "yup";
-import "react-toastify/dist/ReactToastify.css";
+//import {useLocation } from "react-router-dom";
 import queryString from "query-string";
 
 function OTPVerify() {
+	const { register, handleSubmit } = useForm();
 	const navigate = useNavigate();
-	const { register, handleSubmit, setValue, watch } = useForm();
-	const [errors, setErrors] = useState({});
-	const [error, setError] = useState({});
-	const [resendTimer, setResendTimer] = useState(0);
-
-	const optErrors = {
+	const [error, setError] = useState("");
+	//let [searchParams, setSearchParams] = useSearchParams();
+	const errors = {
 		otponeFormControl: "",
 		otptwoFormControl: "",
 		otpthreeFormControl: "",
 		otpfourFormControl: "",
 	};
-
-	const inputRefs = useRef([]);
-
-	const verifyOtpSchema = Yup.object({
-		firstDigit: Yup.string()
-			.required("Code is required")
-			.matches(/^\d$/, "OTP must be a single digit"),
-		secondDigit: Yup.string()
-			.required("Code is required")
-			.matches(/^\d$/, "OTP must be a single digit"),
-		thirdDigit: Yup.string()
-			.required("Code is required")
-			.matches(/^\d$/, "OTP must be a single digit"),
-		fourthDigit: Yup.string()
-			.required("Code is required")
-			.matches(/^\d$/, "OTP must be a single digit"),
-	});
-
-	useEffect(() => {
-		let timer;
-		if (resendTimer > 0) {
-			timer = setInterval(() => {
-				setResendTimer((prevTimer) => prevTimer - 1);
-			}, 1000);
-		}
-
-		return () => {
-			if (timer) clearInterval(timer);
-		};
-	}, [resendTimer]);
 
 	const otpVerifyHandler = async (formData, e) => {
 		try {
@@ -139,14 +106,10 @@ function OTPVerify() {
 							case "4":
 								return;
 							case "5":
-								navigate(
-									"/student/login-with-passcode/upload-id"
-								);
+								navigate("/login-with-passcode/upload-id");
 								return;
 							case "6":
-								navigate(
-									"/student/login-with-passcode/verify-profile"
-								);
+								navigate("/login-with-passcode/verify-profile");
 								return;
 						}
 					} else {
@@ -158,48 +121,15 @@ function OTPVerify() {
 				setError(TRY_AGAIN_MSG);
 				return;
 			}
-			// navigate("/student/login-with-passcode/verify-aadhar");
+			// navigate("/login-with-passcode/verify-aadhar");
 		} catch (error) {
 			console.log("Error while verifing otp :: ", error);
 		}
 	};
 
-	const resendOTPHandler = async (event) => {
-		try {
-			const data = {
-				id_self_student: "6",
-			};
-			await resendOTP(data);
-		} catch (error) {
-			console.log("Error while resending OTP :: ", error);
-		}
-	};
-
-	const handleBack = () => {
-		navigate(-1);
-	};
-
-	const handleInputChange = (e, index) => {
-		const value = e.target.value;
-		if (/^\d$/.test(value)) {
-			setValue(e.target.name, value);
-			if (index < inputRefs.current.length - 1) {
-				inputRefs.current[index + 1].focus();
-			}
-		} else {
-			setValue(e.target.name, "");
-		}
-	};
-
-	const handleKeyDown = (e, index) => {
-		if (e.key === "Backspace" && !e.target.value && index > 0) {
-			inputRefs.current[index - 1].focus();
-		}
-	};
-
 	return (
 		<form onSubmit={handleSubmit(otpVerifyHandler)}>
-			<div className="w-1/4 bg-white rounded-3xl right-64 absolute border h-2/3 p-4">
+			<div className="w-1/4 bg-white rounded-3xl right-64 absolute border h-2/3 p-4 top-1/2 -translate-y-1/2">
 				<div className="flex justify-between items-center">
 					<img
 						src={arrowLeft}

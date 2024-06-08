@@ -31,7 +31,7 @@ function QuestionSection() {
   };
 
   useEffect(() => {
-    getVivaQuestion();
+    // getVivaQuestion();
   });
   return (
     <div className="min-h-96 mb-8 flex flex-col gap-4">
