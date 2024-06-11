@@ -15,7 +15,7 @@ function Resume() {
 
 	const getResumeHandler = async () => {
 		try {
-			const user = JSON.parse(localStorage.getItem("user"));
+			const user = JSON.parse(localStorage.getItem("ps_loguser"));
 			const data = {
 				usercode: user?.usercode,
 				id_self_student: user?.id_self_student,

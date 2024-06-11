@@ -10,7 +10,7 @@ function QuestionSection() {
 
   const getVivaQuestion = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       console.log("User :: ", user);
       const data = {
         usercode: user.usercode,

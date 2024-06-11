@@ -19,7 +19,7 @@ const AttemptedExam = () => {
   const [dataList, setDataList] = useState(null);
   const [error, setError] = useState([]);
   const getAttemptedList = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("ps_loguser"));
     console.log("Attempted List Response:", user);
     try {
       const data = {

@@ -13,7 +13,7 @@ function StudentDashboard() {
 
   const getProfilePercentage = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       console.log("User :: ", user);
       const data = {
         usercode: user.usercode,
@@ -31,7 +31,7 @@ function StudentDashboard() {
 
   const getProfileData = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       console.log("User :: ", user);
       const data = {
         usercode: user.usercode,
