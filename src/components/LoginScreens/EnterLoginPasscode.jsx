@@ -28,6 +28,7 @@ function EnterLoginPasscode() {
 				notId: "sadsad",
 			}; */
 			let response = await loginWithPasscode(formData);
+			console.log(response);
 			if (response.status == 200) {
 				const code = response?.data?.code;
 				const message = response?.data?.status;
@@ -107,14 +108,11 @@ function EnterLoginPasscode() {
 									6;
 								var parms = window.btoa(qstring);
 								navigate(
-									"/student/login-with-passcode/verify-otp?q=" +
-										parms
+									"/login-with-passcode/verify-otp?q=" + parms
 								);
 							} else {
 								//var parms = this.globals.getRandUrl('verify');
-								navigate(
-									"/student/login-with-passcode/verify-profile"
-								);
+								navigate("/login-with-passcode/verify-profile");
 								//this.router.navigate(['verify'], { queryParams: { page: 1 } });
 							}
 						})
@@ -141,6 +139,10 @@ function EnterLoginPasscode() {
 		}
 	};
 
+	const handleBack = () => {
+		navigate(-1);
+	};
+
 	return (
 		<form
 			onSubmit={handleSubmit(loginWithPasscodeHandler)}
@@ -150,7 +152,8 @@ function EnterLoginPasscode() {
 				<img
 					src={arrowLeft}
 					alt=""
-					className="bg-[#1C4481] w-6 h-6 rounded-full"
+					onClick={handleBack}
+					className="bg-[#1C4481] w-6 h-6 rounded-full cursor-pointer"
 				/>
 				<div className="flex flex-col items-end">
 					<span className="font-semibold text-[#AFAFAF]">

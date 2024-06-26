@@ -13,6 +13,9 @@ import SlidingMessage from "../ApiResponse";
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaRegEye } from "react-icons/fa6";
+import { FaRegEyeSlash } from "react-icons/fa6";
+import logo from "../../assets/logo/pareekshn_logo.png";
 
 function Login() {
 	const { register, handleSubmit } = useForm();
@@ -20,6 +23,7 @@ function Login() {
 	const navigate = useNavigate();
 	const [error, setError] = useState("");
 	const [errors, setErrors] = useState({});
+	const [isPasswordVisible, setIsPasswordVisible] = useState("password");
 
 	const validationSchema = Yup.object({
 		username: Yup.string()
@@ -64,17 +68,18 @@ function Login() {
 	};
 
 	return (
-		<div className="min-h-screen relative w-full lg:w-1/2 flex justify-center items-center">
-			<div className="absolute inset-0 z-[-1] overflow-hidden">
-				<img
+		<div className="min-h-screen relative w-full lg:w-2/3 flex justify-center items-center">
+			<img src={logo} alt="" className="absolute top-3 left-3 h-24" />
+			<div className="absolute inset-0 z-[-1] overflow-hidden bg-[#2F5185]">
+				{/* <img
 					src={leftBg}
 					alt=""
 					className="w-full h-full object-fill  cursor-pointer absolute inset-0"
-				/>
+				/> */}
 			</div>
 			<form
 				onSubmit={handleSubmit(loginHandler)}
-				className="bg-[#ffffff] h-[520px] w-3/4 lg:w-4/5 xl:w-2/3 rounded-3xl p-6 flex flex-col gap-4 relative z-10"
+				className="bg-[#ffffff] h-[470px] w-3/5 lg:w-4/5 xl:w-[400px] rounded-3xl p-4 flex flex-col gap-4 relative z-10"
 			>
 				<h1 className="text-xl font-medium text-[#858585]">
 					Candidate Login
@@ -134,7 +139,7 @@ function Login() {
 					<div className="relative h-12">
 						<div>
 							<input
-								type="password"
+								type={isPasswordVisible}
 								id="floating_filled"
 								className="block pl-8 text-black pb-2.5 pt-5 w-full text-base border border-[#6E6E6E] rounded-md appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
 								placeholder=""
@@ -142,7 +147,19 @@ function Login() {
 									required: true,
 								})}
 							/>
-							{/* <VscEye className="absolute top-1/2 right-2 transform -translate-y-1/2 text-[#1C4481]" /> */}
+							{isPasswordVisible === "password" ? (
+								<FaRegEye
+									onClick={() => setIsPasswordVisible("text")}
+									className="absolute top-1/2 right-2 transform -translate-y-1/2 text-[#1C4481] cursor-pointer"
+								/>
+							) : (
+								<FaRegEyeSlash
+									onClick={() =>
+										setIsPasswordVisible("password")
+									}
+									className="absolute top-1/2 right-2 transform -translate-y-1/2 text-[#1C4481] cursor-pointer"
+								/>
+							)}
 							<div
 								htmlFor="floating_filled"
 								className="absolute text-base pl-5 text-[#1C4481] dark:text-[#1C4481] duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-[#1C4481] peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto flex items-center"

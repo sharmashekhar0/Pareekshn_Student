@@ -161,8 +161,7 @@ function VerifyProfile() {
 									5;
 								var parms = window.btoa(qstring);
 								navigate(
-									"/student/login-with-passcode/verify-otp?q=" +
-										parms
+									"/login-with-passcode/verify-otp?q=" + parms
 								);
 							} else {
 								if (
@@ -220,9 +219,7 @@ function VerifyProfile() {
 									this.globals.theoryexam == 1
 								) {
 									//var parms = this.globals.getRandUrl('upload-idpic');
-									navigate(
-										"/student/login-with-passcode/upload-id"
-									);
+									navigate("/login-with-passcode/upload-id");
 								} else {
 									if (settings.feedback_survey == 1) {
 										//  console.log(settings.feedback_survey);

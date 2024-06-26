@@ -15,10 +15,11 @@ import { useForm } from "react-hook-form";
 import { Link, Outlet } from "react-router-dom";
 import Login from "../../components/LoginScreens/Login";
 import ForgetUsername from "../../components/LoginScreens/ForgetUsername";
+import { useNavigate } from "react-router-dom";
 
 function LoginWithPasscode() {
 	return (
-		<div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-0">
+		<div className="w-full lg:w-1/2  flex items-center justify-center p-8 sm:p-0">
 			<div className="w-5/6 lg:w-4/5 gap-8 xl:w-2/3 bg-[#e4ecf9] p-8 rounded-3xl flex flex-col items-center justify-between py-14">
 				<p className="text-center text-[#1C4481] font-medium">
 					Lorem ipsum dolor sit, amet consectetur adipisicing.

@@ -62,10 +62,12 @@ import AddResume from "./components/Dashboard/AddResume.jsx";
 import StudentExams from "./components/Dashboard/StudentExams.jsx";
 import AttemptedExam from "./components/Dashboard/AttemptedExam.jsx";
 import AudioPlayer from "./components/Exams/AudioPlayer.jsx";
-import Descriptive from "./components/Exams/Descriptive.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ExamFeeDetails from "./components/Dashboard/ExamFeeDetails.jsx";
+import Descriptive from "./pages/Exams/Descriptive.jsx";
+import Viva from "./pages/Exams/Viva.jsx";
+
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route>
@@ -126,6 +128,8 @@ const router = createBrowserRouter(
 				></Route>
 			</Route>
 			<Route path="/welcome" element={<Instruction />}></Route>
+			<Route path="/descriptive" element={<Descriptive />} />
+			<Route path="/viva" element={<Viva />} />
 			<Route path="/exams" element={<Question />}>
 				<Route
 					path="/exams/audioPlayer"

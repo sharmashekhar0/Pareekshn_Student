@@ -32,9 +32,11 @@ function UploadPhoto() {
 						const message = response?.data?.status;
 						if (code == 1000) {
 							setError("Your photo captured successfully.");
-							navigate("/student/welcome");
+							navigate("/welcome");
 						} else {
-							setError(message);
+							setError(
+								typeof message === "string" ? message : ""
+							);
 							return;
 						}
 					} else {

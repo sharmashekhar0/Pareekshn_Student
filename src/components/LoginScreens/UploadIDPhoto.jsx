@@ -45,7 +45,7 @@ function UploadIDPhoto() {
 								"Your ID photo captured successfully. You will be redirected to capture your photo."
 							);
 							navigate(
-								"/student/login-with-passcode/upload-photo"
+								"/login-with-passcode/upload-photo"
 							);
 						} else {
 							setError(message);

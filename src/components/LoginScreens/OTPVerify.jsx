@@ -1,5 +1,5 @@
 import { BLANK_MSG, TRY_AGAIN_MSG } from "../../constants";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import arrowLeft from "../../assets/LoginScreen/arrowLeft.png";
 import { useNavigate } from "react-router";
 import verifyOTP from "../../actions/LoginScreens/verifyOTP";
@@ -20,6 +20,8 @@ function OTPVerify() {
 		otpthreeFormControl: "",
 		otpfourFormControl: "",
 	};
+
+	const inputRefs = useRef([null, null, null, null]);
 
 	const otpVerifyHandler = async (formData, e) => {
 		try {
@@ -127,14 +129,23 @@ function OTPVerify() {
 		}
 	};
 
+	const handleBack = () => {
+		navigate(-1);
+	};
+
+	useEffect(() => {
+		console.log(inputRefs);
+	}, [inputRefs?.current]);
+
 	return (
 		<form onSubmit={handleSubmit(otpVerifyHandler)}>
 			<div className="w-1/4 bg-white rounded-3xl right-64 absolute border h-2/3 p-4 top-1/2 -translate-y-1/2">
 				<div className="flex justify-between items-center">
 					<img
 						src={arrowLeft}
+						onClick={handleBack}
 						alt=""
-						className="bg-[#1C4481] w-6 h-6 rounded-full"
+						className="bg-[#1C4481] w-6 h-6 rounded-full cursor-pointer"
 					/>
 					<div className="flex flex-col items-end">
 						<span className="font-semibold text-[#AFAFAF]">
@@ -152,6 +163,7 @@ function OTPVerify() {
 					<div className="flex gap-4">
 						<div className="w-12 h-12 flex items-center justify-center">
 							<input
+								ref={inputRefs.current[0]}
 								type="text"
 								className="h-12 appearance-none enabled:appearance-none w-12 p-4 text-xl font-medium border-blue-700 border rounded outline-none "
 								maxLength="1"
@@ -164,6 +176,7 @@ function OTPVerify() {
 						</div>
 						<div className="w-12 h-12   flex items-center justify-center">
 							<input
+								ref={inputRefs.current[1]}
 								type="text"
 								className="h-12 appearance-none w-12 p-4 text-xl font-medium border-blue-700 border rounded outline-none "
 								maxLength="1"
@@ -176,6 +189,7 @@ function OTPVerify() {
 						</div>
 						<div className="w-12 h-12   flex items-center justify-center">
 							<input
+								ref={inputRefs.current[2]}
 								type="text"
 								className="h-12 appearance-none w-12 p-4 text-xl font-medium border-blue-700 border rounded outline-none "
 								maxLength="1"
@@ -188,6 +202,7 @@ function OTPVerify() {
 						</div>
 						<div className="w-12 h-12   flex items-center justify-center">
 							<input
+								ref={inputRefs.current[3]}
 								type="text"
 								className="h-12 appearance-none w-12 p-4 text-xl font-medium border-blue-700 border rounded outline-none "
 								maxLength="1"
