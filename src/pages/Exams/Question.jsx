@@ -605,14 +605,11 @@ function Question() {
 
 	const getStudentData = async () => {
 		try {
-<<<<<<< HEAD
 			// getExamHandler(user);
-=======
 			const user = JSON.parse(localStorage.getItem("ps_loguser"));
 			console.log("User :: ", user);
 			setUser(user);
 			getExamHandler(user);
->>>>>>> 1c93ce158c3020af26f11b1288963ce0442b803e
 			const data = {
 				usercode: user.usercode,
 				id_self_student: user.id_self_student,
