@@ -1,17 +1,34 @@
+import { RPAY_KEY_ID, RPAY_KEY_SECRET } from "../../constants";
 import React, { useEffect, useState } from "react";
 import getPaidExamDetails from "../../actions/Dashboard/getPaidExamDetails";
 import applyPromo from "../../actions/Dashboard/applyPromo";
 import createPayment from "../../actions/Dashboard/createPayment";
 import updatePayment from "../../actions/Dashboard/updatePayment";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useRazorpay from "react-razorpay";
+
 
 function ExamFeeDetails() {
-	const [user, setUser] = useState({});
+	const navigate = useNavigate();
+	const [userinfo, setUser] = useState({});
 	const [exam, setExam] = useState({});
 	const [paymentModal, setPaymentModal] = useState(false);
-	const [coupon, setCoupon] = useState("FEB2024-PM");
-	const [promoId, setPromoId] = useState(0);
+	const [coupon, setCoupon] = useState("");
+	const [promo, setPromo] = useState(0);
+	const [finalamt, setFinalAmt] = useState(0);
+	const [totaltax, setTotaltax] = useState(0);
+	const [totaltaxAmt, setTotaltaxAmt] = useState(0);
+	const [discountVal, setDiscountAmt] = useState(0);
 	const [order, setOrder] = useState({});
-
+	const [Razorpay] = useRazorpay();
+	let taxv;
+	let taxArr = [];
+	let taxjson = [];
+	let taxamount = 0;
+	let totalfee =  0;  	
 	const onOpen = () => {
 		setPaymentModal(true);
 	};
@@ -22,18 +39,49 @@ function ExamFeeDetails() {
 
 	const getPaidExamDetailsHandler = async (examId) => {
 		try {
-			const user = JSON.parse(localStorage.getItem("user"));
-			setUser(user);
-			console.log(examId);
-			console.log(user);
+			const userinfo = JSON.parse(localStorage.getItem("ps_loguser"));
+			setUser(userinfo);
 			const data = {
-				usercode: user?.usercode,
-				id_self_student: user?.id_self_student,
+				usercode: userinfo?.usercode,
+				id_self_student: userinfo?.id_self_student,
 				id_exam: examId,
 			};
+			//console.log(data);
 			const response = await getPaidExamDetails(data);
-			console.log(response);
-			setExam(response?.data?.exam_detail);
+			if (response.status == 200) {
+				if (response?.data?.code == 1000) 
+				{
+					const examInfo = response?.data?.exam_detail;
+					setExam(response?.data?.exam_detail);
+					if(examInfo.tax != undefined)
+					{
+					  taxArr = examInfo.tax;                
+					} 
+					taxv = 0;
+					for(var i =0; i < taxArr.length; ++i)
+					{
+					  taxv = taxv + taxArr[i].tax_value;
+					  taxjson[i] = { tax_name: taxArr[i].tax_name, tax_value: taxArr[i].tax_value }; 
+					}
+					setTotaltax(taxv);
+					taxamount = (examInfo.exam_fee.exam_fee * taxv)/100;
+					setTotaltaxAmt(taxamount);
+					totalfee =  taxamount + examInfo.exam_fee.exam_fee;  
+					setFinalAmt(totalfee);
+					setDiscountAmt(0);
+				}
+				else
+				{
+				//	toast.error("An error in loading data. Please login again.");
+					navigate("/");
+					return;
+				}
+			}
+			else
+			{
+				console.log("Error while getting paid exam details :: ", error);
+			}
+
 		} catch (error) {
 			console.log("Error while getting paid exam details :: ", error);
 		}
@@ -41,22 +89,29 @@ function ExamFeeDetails() {
 
 	const applyPromoHandler = async () => {
 		try {
-			console.log(user);
+			//console.log(userinfo);
 			const data = {
-				id_self_student: user?.id_self_student,
-				usercode: user?.usercode,
+				id_self_student: userinfo?.id_self_student,
+				usercode: userinfo?.usercode,
 				promo: coupon,
 				type: 1,
 			};
-			console.log(data);
+			//console.log(data);
 			const response = await applyPromo(data);
 			if (response?.data?.code !== 1000) {
-				console.log("here");
-				setCoupon("Invalid Code");
+				toast.error(response?.data?.status);
+				//console.log("Message :: ", response?.data?.status);
+				setCoupon("");
 				return;
 			}
-			console.log(response?.data?.promo?.id);
-			setPromoId(response?.data?.promo?.id);
+			//console.log(response?.data?.promo?.id);
+			setPromo(response?.data?.promo);
+			const discountPer = response?.data?.promo?.discount_percentage;
+			const discountValue = (exam?.exam_fee?.exam_fee * discountPer /100); 
+			const applyDiscount = (exam?.exam_fee?.exam_fee - discountValue).toFixed(2);
+			setDiscountAmt(discountValue);
+			const newAmt = parseFloat(applyDiscount) + parseFloat(totaltaxAmt);
+			setFinalAmt(newAmt);			
 		} catch (error) {
 			console.log("Error while applying promo :: ", error);
 		}
@@ -66,37 +121,95 @@ function ExamFeeDetails() {
 		try {
 			const data = {
 				generic_type: 0,
-				id_self_student: user?.id_self_student,
-				usercode: user?.usercode,
+				id_self_student: userinfo?.id_self_student,
+				usercode: userinfo?.usercode,
 				id_hack: 0,
 				id_exam: exam?.id_exam,
-				id_promo: promoId,
+				id_promo: promo.id,
 			};
-			console.log(data);
+			//console.log(data);
 			const response = await createPayment(data);
-			console.log(response);
+			//console.log(response);
 			console.log(response?.data?.payment_detail);
-			setOrder(response?.data?.payment_detail);
-			updatePaymentHandler(response?.data?.payment_detail);
+			if (response?.data?.code == 1000) {
+				const id_student_payments = response?.data?.payment_detail.id_student_payments;
+				setOrder(response?.data?.payment_detail);
+				const options = {
+					"key": RPAY_KEY_ID,
+					"amount": finalamt, 
+					"name": "Pareekshn Skill",
+					"description": "Payment of mock paid examination",
+					"image": "https://www.pareekshn.com/assets/images/logo.png",
+					"order_id":response?.data?.payment_detail.id,
+					"handler": function (responseR){
+						console.log('razorpay_payment_id: ' + responseR.razorpay_payment_id);
+						console.log('razorpay_order_id: ' + responseR.razorpay_order_id);
+						console.log('razorpay_signature: ' + responseR.razorpay_signature);
+						// apply update payment api here
+						if(responseR.razorpay_payment_id)
+						{
+							updatePaymentHandler(responseR.razorpay_payment_id, id_student_payments);
+						}
+					}
+					,
+					"prefill": {
+					"name": userinfo?.student_name,
+					"email": userinfo?.email,
+					"contact": userinfo?.mobile
+					},
+					"notes": {
+					"address": ""
+					},
+					"theme": {
+					"color": "#3399cc"
+					}
+					};
+					const rzpay = new Razorpay(options);
+					rzpay.open();
+					rzpay.on("payment.failed", function (responseR) {
+						console.log(responseR.error.code);
+						console.log(responseR.error.description);
+						console.log(responseR.error.source);
+						console.log(responseR.error.step);
+						console.log(responseR.error.reason);
+						console.log(responseR.error.metadata.order_id);
+						console.log(responseR.error.metadata.payment_id);
+						toast.success("Payment was unsuccessful due to a temporary issue. If amount got deducted, it will be refunded within 5-7 working days.");
+					  });					
+			}			
+
+			//updatePaymentHandler(response?.data?.payment_detail);
 		} catch (error) {
 			console.log("Error while creating payment :: ", error);
+			setPaymentModal(false);
 		}
 	};
 
-	const updatePaymentHandler = async (order) => {
+	const updatePaymentHandler = async (rozar_paymentid, id_student_payments) => {
+		//console.log(order);
 		try {
 			const data = {
-				id_student_payments: order?.id_student_payments,
+				id_student_payments: id_student_payments,
 				generic_type: 0,
-				id_self_student: user?.id_self_student,
+				id_self_student: userinfo?.id_self_student,
 				id_hack: 0,
 				id_exam: exam?.id_exam,
-				usercode: user?.usercode,
-				razorpay_payment_id: order?.razorpay_payment_id,
+				usercode: userinfo?.usercode,
+				razorpay_payment_id: rozar_paymentid,
 			};
 			console.log(data);
 			const response = await updatePayment(data);
 			console.log(response);
+			if (response?.data?.code == 1000) 
+			{
+				toast.success("The payment successfully done. You will redirected to your dashbaord!");
+				navigate("/dashboard/exams");
+			}
+			else
+			{
+				toast.success("Payment was unsuccessful due to a temporary issue. If amount got deducted, it will be refunded within 5-7 working days.");
+				setPaymentModal(false);
+			}
 		} catch (error) {
 			console.log("Error while updating payment :: ", error);
 		}
@@ -131,13 +244,13 @@ function ExamFeeDetails() {
 						<span className="font-medium tex-sm text-[#1C4481]">
 							Qualification Pack
 						</span>
-						<span>PQP1</span>
+						<span>{exam?.subject_name}</span>
 					</div>
 					<div className="flex flex-col">
 						<span className="font-medium tex-sm text-[#1C4481]">
 							Qualification Code
 						</span>
-						<span>PQP/01</span>
+						<span>{exam?.subject_code}</span>
 					</div>
 					<div className="flex flex-col">
 						<span className="font-medium tex-sm text-[#1C4481]">
@@ -154,7 +267,7 @@ function ExamFeeDetails() {
 							Exam Fee
 						</span>
 						<span className="font-medium text-xl">
-							{exam?.exam_fee?.exam_fee}
+						₹ {exam?.exam_fee?.exam_fee}
 						</span>
 					</div>
 					<div className="flex flex-col gap-4">
@@ -188,13 +301,13 @@ function ExamFeeDetails() {
 						{exam?.tax?.map((tax) => (
 							<div className="flex justify-between w-3/4 pr-[110px] text-xl font-medium bg-[#CFDFF8] p-2 mx-2 mb-4 rounded-md">
 								<span>{tax.tax_name}</span>
-								<span>{tax.tax_value}</span>
+								<span>₹ {tax.tax_value} </span>
 							</div>
 						))}
 					</div>
 					<div className="flex justify-between w-3/4 pr-[110px] text-xl font-medium bg-[#CFDFF8] p-2 mx-2 mb-4 rounded-md">
-						<span>Total</span>
-						<span>100</span>
+						<span>Total Tax</span>
+						<span>₹ {totaltax}</span>
 					</div>
 				</div>
 			</div>
@@ -210,20 +323,20 @@ function ExamFeeDetails() {
 				<div className="w-2/3 p-8 flex flex-col gap-4 text-xl text-[#1C4481] font-semibold">
 					<div className="flex justify-between">
 						<span>Exam Fee</span>
-						<span>₹ 100</span>
+						<span>₹ {exam?.exam_fee?.exam_fee}</span>
 					</div>
 					<div className="flex justify-between">
 						<span>Discount</span>
-						<span>₹ 0</span>
+						<span>₹ {discountVal} </span>
 					</div>
 					<div className="flex justify-between">
-						<span>GST</span>
-						<span>₹ 18</span>
+						<span>Tax</span>
+						<span>₹ {totaltaxAmt}</span>
 					</div>
 					<hr className="border-1 border-neutral-500" />
 					<div className="flex justify-between font-bold bg-[#CFDFF8] px-4 py-2 rounded-lg">
 						<span>Total</span>
-						<span>₹ 100</span>
+						<span>₹ {finalamt}</span>
 					</div>
 				</div>
 			</div>
@@ -242,16 +355,16 @@ function ExamFeeDetails() {
 				<div className="flex items-center justify-center h-screen w-screen top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 fixed bg-[#1c4481ad]">
 					<div className="h-2/3 w-2/5 flex items-center justify-center rounded-3xl opacity-100 bg-white z-[10]">
 						<div className="flex flex-col items-center justify-between h-1/2">
-							<span className="font-semibold text-xl text-[#1C4481]">
+							{/* <span className="font-semibold text-xl text-[#1C4481]">
 								Cancel payment
-							</span>
+							</span> */}
 							<div className="flex flex-col items-center">
 								<span>Your payment is ongoing.</span>
 								<span>
-									Are you sure you want to cancel the payment?
+									Please don't refresh or back your page...
 								</span>
 							</div>
-							<div className=" flex justify-between w-full gap-8">
+							{/* <div className=" flex justify-between w-full gap-8">
 								<div
 									className="h-12 w-full bg-[#1C4481] flex items-center justify-center rounded-full cursor-pointer"
 									onClick={onClose}
@@ -264,11 +377,12 @@ function ExamFeeDetails() {
 								>
 									<span className="text-[#1C4481]">No</span>
 								</div>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>
 			)}
+			<ToastContainer />
 		</div>
 	);
 }

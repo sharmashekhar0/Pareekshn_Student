@@ -19,7 +19,7 @@ function Skills() {
 
   const getITSkillsHandler = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       const data = {
         usercode: user?.usercode,
         id_self_student: user?.id_self_student,
@@ -33,7 +33,7 @@ function Skills() {
 
   const getProjectsHandler = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       const data = {
         usercode: user?.usercode,
         id_self_student: user?.id_self_student,
@@ -45,7 +45,7 @@ function Skills() {
 
   const getCertificatesHandler = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       const data = {
         usercode: user?.usercode,
         id_self_student: user?.id_self_student,
@@ -60,7 +60,7 @@ function Skills() {
 
   const getPublicLinksHandler = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       const data = {
         usercode: user?.usercode,
         id_self_student: user?.id_self_student,
@@ -75,7 +75,7 @@ function Skills() {
 
   const getProfileSummaryHandler = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       const data = {
         usercode: user?.usercode,
         id_self_student: user?.id_self_student,

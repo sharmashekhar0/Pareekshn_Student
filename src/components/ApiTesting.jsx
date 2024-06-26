@@ -53,7 +53,7 @@ import leaderboard from "../actions/Hackthon/leaderboard";
 
 function ApiTesting() {
   const apiTestingHandler = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("ps_loguser"));
     console.log("User Respone:", user);
     try {
       const data = {
