@@ -11,7 +11,7 @@ function EducationProfile() {
 
   const getEducationHandler = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       const data = {
         id_self_student: user?.id_self_student,
         usercode: user?.usercode,

@@ -53,7 +53,7 @@ function Login() {
 				console.log("Message :: ", message);
 				return;
 			}
-			localStorage.setItem("user", JSON.stringify(response.data.info));
+			localStorage.setItem("ps_loguser", JSON.stringify(response.data.info));
 			toast.success("You have successfully logged in!");
 			navigate("/dashboard/exams");
 		} catch (error) {

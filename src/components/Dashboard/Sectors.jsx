@@ -8,7 +8,7 @@ function Sectors() {
 
   const getSectorsHandler = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       const data = {
         usercode: user?.usercode,
         id_self_student: user?.id_self_student,
@@ -25,7 +25,7 @@ function Sectors() {
 
   const selectSectorHandler = async (sectorId, select) => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("ps_loguser"));
       const data = {
         usercode: user?.usercode,
         id_self_student: user?.id_self_student,
