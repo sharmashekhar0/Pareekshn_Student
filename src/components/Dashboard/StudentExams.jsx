@@ -29,9 +29,12 @@ function StudentExams() {
 				usercode: user.usercode,
 				id_self_student: user.id_self_student,
 			};
-			const response = await dashboardExamList(data);
+			const response = await dashboardExamList(data); 
+			//console.log(response);
 			if (response?.data?.code === 1000)
 				setExamList(response?.data?.exams);
+
+			//console.log(examList);
 		} catch (error) {
 			console.log("Error while getting data :: ", error);
 			setErrors([error.message]);
@@ -129,7 +132,7 @@ function StudentExams() {
 															Qualification Pack
 														</span>
 														<span className="font-semibold">
-															Level 3
+															{exam.subject_name}
 														</span>
 													</div>
 												</div>
@@ -144,7 +147,7 @@ function StudentExams() {
 															Qualification Code
 														</span>
 														<span className="font-semibold">
-															L-03
+															{exam.subject_code}
 														</span>
 													</div>
 												</div>
@@ -242,7 +245,7 @@ function StudentExams() {
 														Qualification Pack
 													</span>
 													<span className="font-semibold">
-														Level 3
+														{exam.subject_name}
 													</span>
 												</div>
 											</div>
@@ -257,7 +260,7 @@ function StudentExams() {
 														Qualification Code
 													</span>
 													<span className="font-semibold">
-														L-03
+													{exam.subject_code}
 													</span>
 												</div>
 											</div>
