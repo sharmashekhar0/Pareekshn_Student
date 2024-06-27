@@ -74,6 +74,7 @@ import vivaExamInitial from "../../actions/Passcode/vivaExamInitial.js";
 import vivaQuestionByIndex from "../../actions/Passcode/vivaQuestionByIndex.js";
 import vivaUploadAnswer from "../../actions/Passcode/vivaUploadAnswer.js";
 import vivaExamSubmit from "../../actions/Passcode/vivaExamSubmit.js";
+import Record from "../../components/Exams/Record.jsx";
 
 function Viva() {
 	const navigate = useNavigate();
@@ -108,6 +109,8 @@ function Viva() {
 	const [canvasData, setCanvasData] = useState("");
 	const [attachment, setAttachment] = useState(null);
 	const [answerAttachment, setAnswerAttachment] = useState(null);
+	const [vivaAnswer, setVivaAnswer] = useState(null);
+	const [answerType, setAnswerType] = useState("");
 
 	const handleModeChange = (event) => {
 		setSelectedMode(event.target.value);
@@ -180,17 +183,7 @@ function Viva() {
 
 	useEffect(() => {
 		getStudentData();
-		if (exam?.theory2_login) {
-			getTheorySecondExamInitialHandler();
-		} else if (exam?.entered_psyc) {
-			getPsychometricExamInitialHandler();
-		} else if (exam?.auto) {
-			autoExamInitialHandler();
-		} else if (exam?.descriptive) {
-			descriptiveExamInitialHandler();
-		} else {
-			getInitialExamHandler();
-		}
+		vivaExamInitialHandler();
 		getSecondaryLanguageHandler();
 	}, [user, examType]);
 
@@ -1950,31 +1943,144 @@ function Viva() {
 	const vivaExamInitialHandler = async () => {
 		try {
 			const data = {
-				usercode: user?.usercode,
 				exam_id: exam?.exam_id,
 				student_id: user?.id,
+				usercode: user?.usercode,
 			};
 			const response = await vivaExamInitial(data);
 			console.log(response);
+			if (response?.data?.code === 1000) {
+				const answerResponse = response?.data?.exams?.res;
+
+				answerResponse?.map((res) => {
+					console.log(res);
+					if (res?.lock) {
+						submitted[res?.index] = true;
+					} else if (res?.answer) {
+						answered[res?.index] = true;
+					} else {
+						visited[res?.index] = true;
+					}
+				});
+
+				console.log(answerResponse);
+				console.log(response?.data?.exams);
+				startTimer(exam?.duration, setTime);
+				setExamInitial(response?.data?.exams);
+				setTotalQuestion(response?.data?.exams?.totalq);
+				console.log(response?.data?.exams?.question);
+				setCurrentQuestion(response?.data?.exams?.question);
+				setOriginalQuestion(response?.data?.exams?.question);
+				setPrimaryLang(response?.data?.exams?.question?.lang);
+				const answerType =
+					response?.data?.exams?.question?.answer?.media_type;
+				const answer =
+					response?.data?.exams?.question?.answer?.answer_media;
+				console.log(answer);
+				setVivaAnswer(answer);
+				setAnswerType(answerType);
+				// console.log(response?.data?.exams?.question?.options);
+				// const options = response?.data?.exams?.question?.options;
+				// console.log(options);
+				// let selected;
+				// if (exam?.mso) {
+				// 	selected = "";
+				// 	let selectedArray = [];
+				// 	options?.map((option) => {
+				// 		console.log(option?.select_option);
+				// 		if (option?.select_option) {
+				// 			selectedArray?.push(option?.select_option);
+				// 		}
+				// 	});
+				// 	selected = selectedArray?.join(",");
+				// 	console.log(selected);
+				// } else {
+				// 	selected = 0;
+				// 	options?.map((option) => {
+				// 		console.log(option?.select_option);
+				// 		if (option?.select_option) {
+				// 			selected = option?.select_option;
+				// 		}
+				// 	});
+				// }
+				// console.log(selected);
+				// setSelectedAnswer(selected);
+
+				// const lock =
+				// 	options[0]?.lock_status ||
+				// 	options[1]?.lock_status ||
+				// 	options[2]?.lock_status ||
+				// 	options[3]?.lock_status;
+				// console.log(lock);
+				// setLockStatus(lock);
+			}
 		} catch (error) {
-			console.log("Error while getting viva exam initial :: ", error);
+			console.log("Error while getting initial exam :: ");
 		}
 	};
 
-	const vivaQuestionByIndexHandler = async () => {
+	const vivaQuestionByIndexHandler = async (value, idx) => {
 		try {
+			const ind = idx ? idx : Number(currentQuestion?.index) + value;
+			console.log(ind);
 			const data = {
-				usercode: user?.usercode,
+				index: ind,
+				req_by: "web",
 				exam_id: exam?.exam_id,
 				student_id: user?.id,
-				index: currentQuestion?.index,
-				req_by: "web",
+				usercode: user?.usercode,
 			};
+			console.log(data);
 			const response = await vivaQuestionByIndex(data);
+			setSelectedAnswer("");
 			console.log(response);
+			if (response?.data?.code === 1000) {
+				setVivaAnswer("");
+				setAnswerType("");
+				setCurrentQuestion(response?.data?.question);
+				setOriginalQuestion(response?.data?.question);
+				console.log(response?.data?.question);
+				const answerType = response?.data?.question?.answer?.media_type;
+				const answer = response?.data?.question?.answer?.answer_media;
+				console.log(answer);
+				setVivaAnswer(answer);
+				setAnswerType(answerType);
+				// const options = response?.data?.question?.options;
+				// console.log(options);
+				// let selected;
+				// if (exam?.mso) {
+				// 	selected = "";
+				// 	let selectedArray = [];
+				// 	options?.map((option) => {
+				// 		console.log(option?.select_option);
+				// 		if (option?.select_option) {
+				// 			selectedArray?.push(option?.select_option);
+				// 		}
+				// 	});
+				// 	selected = selectedArray?.join(",");
+				// 	console.log(selected);
+				// } else {
+				// 	selected = 0;
+				// 	options?.map((option) => {
+				// 		console.log(option?.select_option);
+				// 		if (option?.select_option) {
+				// 			selected = option?.select_option;
+				// 		}
+				// 	});
+				// }
+				// console.log(selected);
+				// setSelectedAnswer(selected);
+				// const lock =
+				// 	options[0]?.lock_status ||
+				// 	options[1]?.lock_status ||
+				// 	options[2]?.lock_status ||
+				// 	options[3]?.lock_status;
+				// console.log(lock);
+				// setLockStatus(lock);
+			}
 		} catch (error) {
 			console.log(
-				"Error while getting viva question by index :: ",
+				"Error while getting theory question by index :: ",
 				error
 			);
 		}
@@ -1982,17 +2088,51 @@ function Viva() {
 
 	const vivaUploadAnswerHandler = async () => {
 		try {
+			console.log(user);
+			console.log(vivaAnswer);
 			const data = {
+				file: vivaAnswer,
+				sub_user_id: user?.subuserid,
+				user_id: user?.userid,
 				usercode: user?.usercode,
 				exam_id: exam?.exam_id,
 				student_id: user?.id,
 				index: currentQuestion?.index,
+				marks: "",
+				remarks: "",
 				req_by: "web",
+				answer_type: answerType,
+				question_id: currentQuestion?.question_id,
 			};
-			const response = await vivaQuestionByIndex(data);
-			console.log(response);
+			console.log(data);
+			let response = null;
+			if (data?.file && !data?.file?.includes("http")) {
+				response = await vivaUploadAnswer(data);
+				console.log(response);
+				if (response?.data?.code === 1000) {
+					if (selectedAnswer && !lockStatus) {
+						console.log(selectedAnswer);
+						answered[data?.index] = true;
+						visited[data?.index] = false;
+					} else {
+						submitted[data?.index] = true;
+					}
+					const submittedAnswer = {
+						index: data?.index,
+						answer_id: data?.answer_id,
+						question_id: data?.question_id,
+						time_taken: data?.time_taken,
+					};
+					pushToAnswers(submittedAnswer);
+				}
+			} else {
+				console.log("here");
+				visited[data?.index] = true;
+				answered[data?.index] = false;
+				submitted[data?.index] = false;
+			}
 		} catch (error) {
-			console.log("Error while getting viva upload answer :: ", error);
+			console.log("Error while viva answer by index :: ", error);
 		}
 	};
 
@@ -2006,7 +2146,7 @@ function Viva() {
 			const response = await vivaExamSubmit(data);
 			console.log(response);
 		} catch (error) {
-			console.log("Error while getting viva upload answer :: ", error);
+			console.log("Error while submitting viva exam :: ", error);
 		}
 	};
 
@@ -2078,7 +2218,10 @@ function Viva() {
 									>
 										<option>Select</option>
 										{secondaryLanguage?.map((lang) => (
-											<option value={lang?.lang_code}>
+											<option
+												key={lang?.lang_code}
+												value={lang?.lang_code}
+											>
 												{lang?.lang_name}
 											</option>
 										))}
@@ -2128,35 +2271,40 @@ function Viva() {
 											<div
 												key={index}
 												onClick={() => {
-													if (exam?.theory2_login) {
-														getTheorySecondQuestionByIndexHandler(
-															0,
-															index + 1
-														);
-														theorySecondSubmitByIndexHandler();
-													} else if (
-														exam?.entered_psyc
-													) {
-														getPsycQuestionByIndexHandler(
-															0,
-															index + 1
-														);
-														psycSubmitByIndexHandler();
-													} else if (
-														exam?.descriptive
-													) {
-														descriptiveQuestionByIndexHandler(
-															0,
-															index + 1
-														);
-														descriptiveSubmitByIndexHandler();
-													} else {
-														submitByIndexHandler();
-														getTheoryQuestionByNoHandler(
-															0,
-															index + 1
-														);
-													}
+													// if (exam?.theory2_login) {
+													// 	getTheorySecondQuestionByIndexHandler(
+													// 		0,
+													// 		index + 1
+													// 	);
+													// 	theorySecondSubmitByIndexHandler();
+													// } else if (
+													// 	exam?.entered_psyc
+													// ) {
+													// 	getPsycQuestionByIndexHandler(
+													// 		0,
+													// 		index + 1
+													// 	);
+													// 	psycSubmitByIndexHandler();
+													// } else if (
+													// 	exam?.descriptive
+													// ) {
+													// 	descriptiveQuestionByIndexHandler(
+													// 		0,
+													// 		index + 1
+													// 	);
+													// 	descriptiveSubmitByIndexHandler();
+													// } else {
+													// 	submitByIndexHandler();
+													// 	getTheoryQuestionByNoHandler(
+													// 		0,
+													// 		index + 1
+													// 	);
+													// }
+													vivaQuestionByIndexHandler(
+														0,
+														index + 1
+													);
+													vivaUploadAnswerHandler();
 												}}
 												className={`bg-[#A6E097] min-h-8 min-w-8 flex items-center justify-center rounded-lg font-semibold text-lg text-[#14540E] cursor-pointer ${className}`}
 											>
@@ -2296,27 +2444,29 @@ function Viva() {
 									<div
 										className="flex flex-col items-center gap-2 cursor-pointer"
 										onClick={() => {
-											if (exam?.theory2_login) {
-												getTheorySecondQuestionByIndexHandler(
-													-1
-												);
-												theorySecondSubmitByIndexHandler();
-											} else if (exam?.entered_psyc) {
-												psycSubmitByIndexHandler();
-												getPsycQuestionByIndexHandler(
-													-1
-												);
-											} else if (exam?.descriptive) {
-												descriptiveQuestionByIndexHandler(
-													-1
-												);
-												descriptiveSubmitByIndexHandler();
-											} else {
-												submitByIndexHandler();
-												getTheoryQuestionByNoHandler(
-													-1
-												);
-											}
+											// if (exam?.theory2_login) {
+											// 	getTheorySecondQuestionByIndexHandler(
+											// 		-1
+											// 	);
+											// 	theorySecondSubmitByIndexHandler();
+											// } else if (exam?.entered_psyc) {
+											// 	psycSubmitByIndexHandler();
+											// 	getPsycQuestionByIndexHandler(
+											// 		-1
+											// 	);
+											// } else if (exam?.descriptive) {
+											// 	descriptiveQuestionByIndexHandler(
+											// 		-1
+											// 	);
+											// 	descriptiveSubmitByIndexHandler();
+											// } else {
+											// 	submitByIndexHandler();
+											// 	getTheoryQuestionByNoHandler(
+											// 		-1
+											// 	);
+											// }
+											vivaQuestionByIndexHandler(-1);
+											vivaUploadAnswerHandler();
 										}}
 									>
 										<div className="border-2 flex-col border-[#1C4481] rounded-full h-11 w-11 flex items-center justify-center">
@@ -2341,25 +2491,27 @@ function Viva() {
 									<div
 										className="flex flex-col items-center gap-2 cursor-pointer"
 										onClick={() => {
-											if (exam?.theory2_login) {
-												getTheorySecondQuestionByIndexHandler(
-													1
-												);
-												theorySecondSubmitByIndexHandler();
-											} else if (exam?.entered_psyc) {
-												getPsycQuestionByIndexHandler(
-													1
-												);
-												psycSubmitByIndexHandler();
-											} else if (exam?.descriptive) {
-												descriptiveQuestionByIndexHandler(
-													1
-												);
-												descriptiveSubmitByIndexHandler();
-											} else {
-												submitByIndexHandler();
-												getTheoryQuestionByNoHandler(1);
-											}
+											// if (exam?.theory2_login) {
+											// 	getTheorySecondQuestionByIndexHandler(
+											// 		1
+											// 	);
+											// 	theorySecondSubmitByIndexHandler();
+											// } else if (exam?.entered_psyc) {
+											// 	getPsycQuestionByIndexHandler(
+											// 		1
+											// 	);
+											// 	psycSubmitByIndexHandler();
+											// } else if (exam?.descriptive) {
+											// 	descriptiveQuestionByIndexHandler(
+											// 		1
+											// 	);
+											// 	descriptiveSubmitByIndexHandler();
+											// } else {
+											// 	submitByIndexHandler();
+											// 	getTheoryQuestionByNoHandler(1);
+											// }
+											vivaQuestionByIndexHandler(1);
+											vivaUploadAnswerHandler();
 										}}
 									>
 										<div className="border-2 flex-col border-[#1C4481] rounded-full h-11 w-11 flex items-center justify-center">
@@ -2387,9 +2539,7 @@ function Viva() {
 										<span>Lock</span>
 									</div>
 									<span
-										onClick={
-											descriptiveFinalExamSubmitHandler
-										}
+										onClick={vivaUploadAnswerHandler}
 										className="cursor-pointer"
 									>
 										Submit
@@ -2400,7 +2550,13 @@ function Viva() {
 						<div className="w-1/2 mt-1">
 							<div className="bg-[#F3F7FF] mx-4 rounded-xl p-6 flex flex-col gap-6">
 								<span className="font-semibold">Ans.</span>
-								<div className="flex items-center gap-4">
+								<Record
+									setVivaAnswer={setVivaAnswer}
+									setAnswerType={setAnswerType}
+									vivaAnswer={vivaAnswer}
+									answerType={answerType}
+								/>
+								{/* <div className="flex items-center gap-4">
 									<div className="flex items-center gap-2">
 										<input
 											type="radio"
@@ -2486,7 +2642,7 @@ function Viva() {
 										/>
 									)}
 									<span>{attachment?.name}</span>
-								</div>
+								</div> */}
 							</div>
 						</div>
 					</div>
